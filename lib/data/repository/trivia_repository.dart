@@ -1,0 +1,3 @@
+class TriviaRepository {
+  TriviaRepository();
+}
