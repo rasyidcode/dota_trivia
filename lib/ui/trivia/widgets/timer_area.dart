@@ -16,28 +16,44 @@ class TimerArea extends StatelessWidget {
             const Spacer(),
             BlocBuilder<TriviaCubit, TriviaState>(
               builder: (context, state) {
-                if (state.isLoadingQuestion || state.isCheckingAnswer) {
+                String? playerOpt = state.playerOption;
+                String? correctOpt = state.correctOption;
+
+                if (state.isLoadingQuestion || state.isCheckingOption) {
                   return const TimerLoading();
                 } else if (state.isTimerOngoing) {
                   return TimerTicking(
                       seconds: state.timer != null ? state.timer! : 0);
                 } else if (state.isShowResult) {
+                  if (playerOpt == null) {
+                    return const NoAnswerSubmitted();
+                  }
+                  String result = 'INCORRECT';
+                  bool isCorrect = false;
+
+                  if (correctOpt != null) {
+                    isCorrect = playerOpt == correctOpt;
+                    result = isCorrect ? 'CORRECT' : 'INCORRECT';
+                  }
+
                   return Column(
                     children: [
                       Text(
-                        'CORRECT',
+                        result,
                         style:
                             Theme.of(context).textTheme.displayMedium?.copyWith(
                                   color: Colors.deepOrangeAccent,
                                 ),
                       ),
-                      Text(
-                        '+100 TRIVIA POINTS',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(color: Colors.deepOrangeAccent),
-                      ),
+                      isCorrect
+                          ? Text(
+                              '+100 TRIVIA POINTS',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(color: Colors.deepOrangeAccent),
+                            )
+                          : Container(),
                     ],
                   );
                 }

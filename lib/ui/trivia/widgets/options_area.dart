@@ -56,99 +56,129 @@ class OptionsArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<TriviaCubit, TriviaState, List<OptionItem>?>(
-      selector: (state) => state.question?.options,
-      builder: (context, opts) {
-        if (opts == null) {
-          return const EmptyOptions();
-        }
+    return BlocBuilder<TriviaCubit, TriviaState>(builder: (context, state) {
+      List<OptionItem>? opts = state.question?.options;
 
-        return Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
-          children: opts.map((opt) {
-            return BlocSelector<TriviaCubit, TriviaState, OptionsStatus?>(
-              selector: (state) => state.optionsStatus,
-              builder: (context, optStat) {
-                LinearGradient linearGradient;
-                if (optStat == OptionsStatus.active) {
-                  linearGradient = _activeOptionGradient();
-                } else if (optStat == OptionsStatus.locked) {
-                  linearGradient = _selectedOptionGradient();
-                } else if (optStat == OptionsStatus.incorrect) {
-                  linearGradient = _incorrectOptionGradient();
-                } else if (optStat == OptionsStatus.correct) {
+      if (opts == null) {
+        return const EmptyOptions();
+      }
+
+      return Wrap(
+        spacing: 8.0,
+        runSpacing: 8.0,
+        children: opts.map((opt) {
+          OptionsStatus? optStat = state.optionsStatus;
+          String? playerOpt = state.playerOption;
+          String? correctOpt = state.correctOption;
+
+          LinearGradient linearGradient =
+              const LinearGradient(colors: [Colors.black, Colors.black]);
+
+          if (state.isTimerOngoing || state.isCheckingOption) {
+            if (playerOpt != null &&
+                opt.label != null &&
+                opt.label == playerOpt) {
+              linearGradient = _selectedOptionGradient();
+            } else {
+              linearGradient = _activeOptionGradient();
+            }
+          } else if (state.isShowResult) {
+            if (playerOpt == null &&
+                correctOpt != null &&
+                correctOpt == opt.label) {
+              linearGradient = _selectedOptionGradient();
+            }
+
+            if (playerOpt != null && correctOpt != null && opt.label != null) {
+              if (opt.label == playerOpt) {
+                if (playerOpt == correctOpt) {
                   linearGradient = _correctOptionGradient();
                 } else {
-                  linearGradient = const LinearGradient(colors: [
-                    Colors.transparent,
-                    Colors.transparent,
-                  ]);
+                  linearGradient = _incorrectOptionGradient();
                 }
+              }
+            }
+          }
 
-                return GestureDetector(
-                  onTap: () {
-                    if (opt.label != null && optStat == OptionsStatus.active) {
-                      BlocProvider.of<TriviaCubit>(context)
-                          .chooseOption(opt.label!);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white54.withOpacity(0.3),
-                        width: 1.3,
-                      ),
-                      gradient: linearGradient,
-                    ),
-                    width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
-                    height: 80.0,
-                    padding: const EdgeInsets.all(8.0),
-                    child: Stack(
-                      children: [
-                        Text(
-                          opt.label != null ? opt.label!.toUpperCase() : '',
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    color: Colors.deepOrangeAccent,
-                                  ),
-                        ),
-                        Center(
-                          child: Text(
-                            opt.content != null ? opt.content! : '',
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.white),
-                          ),
-                        ),
+          // if (optStat != null) {
+          //   if (playerOpt != null) {
+          //     // if (playerOpt == opt.label) {
+          //     //   if (optStat == OptionsStatus.locked) {
+          //     //     linearGradient = _selectedOptionGradient();
+          //     //   } else if (optStat == OptionsStatus.correct) {
+          //     //     linearGradient = _correctOptionGradient();
+          //     //   } else if (optStat == OptionsStatus.incorrect) {
+          //     //     linearGradient = _incorrectOptionGradient();
+          //     //   }
+          //     // }
+          //   } else {
+          //     if (correctOpt != null && correctOpt == opt.label) {
+          //       linearGradient = _selectedOptionGradient();
+          //     }
+          //   }
+          // }
 
-                        // if (true)
-                        //   const Positioned(
-                        //     bottom: 0,
-                        //     child: Icon(
-                        //       Icons.check,
-                        //       color: Colors.green,
-                        //     ),
-                        //   )
-                        // else
-                        //   Positioned(
-                        //     bottom: 0,
-                        //     child: Icon(
-                        //       Icons.close,
-                        //       color: Colors.deepOrangeAccent,
-                        //     ),
-                        //   ),
-                      ],
+          return GestureDetector(
+            onTap: () {
+              if (opt.label != null &&
+                  state.isTimerOngoing &&
+                  playerOpt == null) {
+                BlocProvider.of<TriviaCubit>(context).chooseOption(opt.label!);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white54.withOpacity(0.3),
+                  width: 1.3,
+                ),
+                gradient: linearGradient,
+              ),
+              width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
+              height: 80.0,
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                children: [
+                  Text(
+                    opt.label != null ? opt.label!.toUpperCase() : '',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: Colors.deepOrangeAccent,
+                        ),
+                  ),
+                  Center(
+                    child: Text(
+                      opt.content != null ? opt.content! : '',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(color: Colors.white),
                     ),
                   ),
-                );
-              },
-            );
-          }).toList(),
-        );
-      },
-    );
+                  if (state.isShowResult &&
+                      playerOpt != null &&
+                      opt.label != null &&
+                      playerOpt == opt.label)
+                    Positioned(
+                      bottom: 0,
+                      child: playerOpt == correctOpt
+                          ? const Icon(
+                              Icons.check,
+                              color: Colors.green,
+                            )
+                          : const Icon(
+                              Icons.close,
+                              color: Colors.deepOrangeAccent,
+                            ),
+                    )
+                  else
+                    Container()
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    });
   }
 }

@@ -36,11 +36,16 @@ class TriviaState extends Equatable {
   final String? playerOption;
 
   bool get isLoadingQuestion => status == TriviaStateStatus.loading;
+
   bool get isTimerReady => sessionStatus == SessionStatus.start;
   bool get isTimerOngoing => sessionStatus == SessionStatus.ongoing;
-  bool get isCheckingAnswer => sessionStatus == SessionStatus.checking;
+  bool get isCheckingOption => sessionStatus == SessionStatus.checking;
   bool get isShowResult => sessionStatus == SessionStatus.show;
-  bool get isFetchDataCompleted => fetchDataStatus == FetchDataStatus.success;
+
+  String? get correctOption =>
+      question?.options?.firstWhere((opt) => opt.isCorrect == true).label;
+
+  bool get isReadyStartTrivia => fetchDataStatus == FetchDataStatus.success;
 
   @override
   List<Object?> get props => [
@@ -74,5 +79,12 @@ class TriviaState extends Equatable {
       optionsStatus: optionsStatus ?? this.optionsStatus,
       playerOption: playerOption ?? this.playerOption,
     );
+  }
+
+  TriviaState reset() {
+    return const TriviaState(
+        status: TriviaStateStatus.initial,
+        fetchDataStatus: FetchDataStatus.success,
+        message: 'Load next question');
   }
 }

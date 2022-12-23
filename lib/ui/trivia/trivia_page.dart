@@ -32,12 +32,16 @@ class _TriviaPageState extends State<TriviaPage> {
       create: (_) => _triviaCubit,
       child: BlocListener<TriviaCubit, TriviaState>(
         listener: (context, state) {
-          if (state.isFetchDataCompleted) {
+          if (state.isReadyStartTrivia) {
             BlocProvider.of<TriviaCubit>(context).getQuestion();
           }
 
           if (state.isTimerReady) {
             BlocProvider.of<TriviaCubit>(context).startTimer();
+          }
+
+          if (state.isCheckingOption) {
+            BlocProvider.of<TriviaCubit>(context).validateOption();
           }
         },
         child: Scaffold(

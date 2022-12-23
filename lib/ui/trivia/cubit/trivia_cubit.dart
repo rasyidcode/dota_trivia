@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dota_trivia/data/model/template_item.dart';
 import 'package:dota_trivia/data/network/fetch_data_exception.dart';
 import 'package:dota_trivia/data/provider/trivia_provider_exception.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
 import 'package:dota_trivia/data/repository/trivia_repository_exception.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
-import 'package:flutter/foundation.dart';
 
 class TriviaCubit extends Cubit<TriviaState> {
   TriviaCubit(this._triviaRepository)
@@ -91,22 +89,52 @@ class TriviaCubit extends Cubit<TriviaState> {
     emit(state.copyWith(timer: _duration));
   }
 
+  void validateOption() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    String? correctOpt = state.correctOption;
+    String? playerOpt = state.playerOption;
+    OptionsStatus optionsStatus = OptionsStatus.incorrect;
+
+    if (correctOpt != null && playerOpt != null) {
+      optionsStatus = playerOpt == correctOpt
+          ? OptionsStatus.correct
+          : OptionsStatus.incorrect;
+    }
+
+    emit(state.copyWith(
+        sessionStatus: SessionStatus.show,
+        message: 'Showing result',
+        optionsStatus: optionsStatus));
+
+    resetQuestion();
+  }
+
+  void resetQuestion() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    emit(state.reset());
+  }
+
   void startTimer() {
     closeTimer();
 
-    _timerStreamSubscription = _tick(ticks: _duration).listen((event) {
+    _timerStreamSubscription = _tick(ticks: _duration).listen((event) async {
       if (event >= 0) {
         emit(state.copyWith(
             timer: event,
             sessionStatus: SessionStatus.ongoing,
             optionsStatus: OptionsStatus.active,
             message: 'Playing'));
-      } else {
-        closeTimer();
-        emit(state.copyWith(
-            sessionStatus: SessionStatus.checking,
-            message: 'Checking answer',
-            optionsStatus: OptionsStatus.locked));
+
+        if (event == 0) {
+          await Future.delayed(const Duration(seconds: 1));
+
+          emit(state.copyWith(
+              sessionStatus: SessionStatus.checking,
+              message: 'Checking answer',
+              optionsStatus: OptionsStatus.locked));
+        }
       }
     });
   }
@@ -118,8 +146,8 @@ class TriviaCubit extends Cubit<TriviaState> {
   @override
   void onChange(Change<TriviaState> change) {
     super.onChange(change);
-    if (kDebugMode) {
-      print(change);
-    }
+    // if (kDebugMode) {
+    //   print(change);
+    // }
   }
 }
