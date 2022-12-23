@@ -11,8 +11,8 @@ class TopBar extends StatelessWidget {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           colors: [
-            Colors.red.withRed(180).withOpacity(0.6),
-            Colors.red.withRed(160).withOpacity(0.6),
+            Colors.black.withRed(75),
+            Colors.black.withRed(100),
           ],
         ),
       ),

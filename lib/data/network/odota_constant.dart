@@ -10,8 +10,16 @@ class ODotaConstant {
 
   final http.Client client;
 
-  Future<Map<String, dynamic>> fetchHeroes() async {
-    final response = await client.get(Uri.parse('$baseDataURL/heroes.json'));
+  Future<Map<String, dynamic>> fetchItems() async {
+    final response = await client.get(Uri.parse('$baseDataURL/items.json'));
+    if (response.statusCode != 200) {
+      throw FetchDataException();
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> fetchAbilities() async {
+    final response = await client.get(Uri.parse('$baseDataURL/items.json'));
     if (response.statusCode != 200) {
       throw FetchDataException();
     }

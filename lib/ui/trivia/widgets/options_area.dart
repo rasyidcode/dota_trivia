@@ -1,5 +1,10 @@
+import 'package:dota_trivia/data/model/common/option_item.dart';
+import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
+import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:dota_trivia/ui/trivia/trivia_page.dart';
+import 'package:dota_trivia/ui/trivia/widgets/empty_options.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OptionsArea extends StatelessWidget {
   const OptionsArea({super.key});
@@ -9,8 +14,8 @@ class OptionsArea extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Colors.blueGrey.withRed(70).withGreen(130).withBlue(130),
-        Colors.blueGrey.withRed(70).withGreen(130).withBlue(130),
+        Colors.blueGrey.withOpacity(0.7),
+        Colors.blueGrey.withOpacity(0.7),
       ],
     );
   }
@@ -20,8 +25,8 @@ class OptionsArea extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Colors.red.withRed(130).withOpacity(0.3),
-        Colors.red.withRed(130).withOpacity(0.9),
+        Colors.black.withRed(25),
+        Colors.black.withRed(75),
       ],
     );
   }
@@ -31,9 +36,9 @@ class OptionsArea extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Colors.red.withRed(190).withOpacity(0.4),
-        Colors.red.withRed(190),
-        Colors.red.withRed(235).withGreen(120).withBlue(60),
+        Colors.black.withRed(25),
+        Colors.black.withRed(75),
+        Colors.black.withRed(125),
       ],
     );
   }
@@ -43,72 +48,107 @@ class OptionsArea extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Colors.red.withRed(170).withOpacity(0.3),
-        Colors.red.withRed(170).withOpacity(0.9),
+        Colors.black.withRed(25),
+        Colors.black.withRed(100),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 8.0,
-      children: ['a', 'b', 'c', 'd'].map((label) {
-        return GestureDetector(
-          onTap: () {},
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white54.withOpacity(0.3),
-                width: 1.3,
-              ),
-              gradient: _incorrectOptionGradient(),
-            ),
-            width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
-            height: 80.0,
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              children: [
-                Text(
-                  label.toUpperCase(),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color:
-                            Colors.red.withRed(255).withGreen(180).withBlue(90),
+    return BlocSelector<TriviaCubit, TriviaState, List<OptionItem>?>(
+      selector: (state) => state.question?.options,
+      builder: (context, opts) {
+        if (opts == null) {
+          return const EmptyOptions();
+        }
+
+        return Wrap(
+          spacing: 8.0,
+          runSpacing: 8.0,
+          children: opts.map((opt) {
+            return BlocSelector<TriviaCubit, TriviaState, OptionsStatus?>(
+              selector: (state) => state.optionsStatus,
+              builder: (context, optStat) {
+                LinearGradient linearGradient;
+                if (optStat == OptionsStatus.active) {
+                  linearGradient = _activeOptionGradient();
+                } else if (optStat == OptionsStatus.locked) {
+                  linearGradient = _selectedOptionGradient();
+                } else if (optStat == OptionsStatus.incorrect) {
+                  linearGradient = _incorrectOptionGradient();
+                } else if (optStat == OptionsStatus.correct) {
+                  linearGradient = _correctOptionGradient();
+                } else {
+                  linearGradient = const LinearGradient(colors: [
+                    Colors.transparent,
+                    Colors.transparent,
+                  ]);
+                }
+
+                return GestureDetector(
+                  onTap: () {
+                    if (opt.label != null && optStat == OptionsStatus.active) {
+                      BlocProvider.of<TriviaCubit>(context)
+                          .chooseOption(opt.label!);
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white54.withOpacity(0.3),
+                        width: 1.3,
                       ),
-                ),
-                Center(
-                  child: Text(
-                    'Phantom Lancer',
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-                if (false)
-                  const Positioned(
-                    bottom: 0,
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.green,
+                      gradient: linearGradient,
                     ),
-                  )
-                else
-                  Positioned(
-                    bottom: 0,
-                    child: Icon(
-                      Icons.close,
-                      color:
-                          Colors.red.withRed(255).withGreen(175).withBlue(90),
+                    width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
+                    height: 80.0,
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
+                      children: [
+                        Text(
+                          opt.label != null ? opt.label!.toUpperCase() : '',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: Colors.deepOrangeAccent,
+                                  ),
+                        ),
+                        Center(
+                          child: Text(
+                            opt.content != null ? opt.content! : '',
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ),
+
+                        // if (true)
+                        //   const Positioned(
+                        //     bottom: 0,
+                        //     child: Icon(
+                        //       Icons.check,
+                        //       color: Colors.green,
+                        //     ),
+                        //   )
+                        // else
+                        //   Positioned(
+                        //     bottom: 0,
+                        //     child: Icon(
+                        //       Icons.close,
+                        //       color: Colors.deepOrangeAccent,
+                        //     ),
+                        //   ),
+                      ],
                     ),
                   ),
-              ],
-            ),
-          ),
+                );
+              },
+            );
+          }).toList(),
         );
-      }).toList(),
+      },
     );
   }
 }

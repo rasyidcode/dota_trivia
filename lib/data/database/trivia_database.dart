@@ -3,20 +3,49 @@ import 'package:sqflite/sqflite.dart';
 
 class TriviaDatabase {
   TriviaDatabase(String path) {
-    _db = openDatabase(
+    db = openDatabase(
       join(path, 'dota_trivia.db'),
-      version: 1,
+      version: 2,
       onCreate: ((db, version) async {
+        await _createTemplatesTable(db);
         await _createQuestionsTable(db);
         await _createOptionsTable(db);
+        await _createHeroesTable(db);
       }),
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (newVersion == 2) {
+          await _createQuestionsTable(db);
+        }
+      },
     );
   }
 
-  Future<Database>? _db;
+  Future<Database>? db;
 
-  Future<Database>? getDatabase() {
-    return _db;
+  Future<void> _createHeroesTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS heroes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          code TEXT NULL,
+          name TEXT NULL,
+          primary_attr TEXT NULL,
+          attack_type TEXT NULL,
+          image_url TEXT NULL,
+          icon_url TEXT NULL,
+          move_speed INTEGER NULL,
+          legs INTEGER NULL
+        )
+    ''');
+  }
+
+  Future<void> _createTemplatesTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS templates (
+        id INTEGER PRIMARY KEY,
+        question TEXT NULL,
+        option_type TEXT NULL
+      )
+    ''');
   }
 
   Future<void> _createQuestionsTable(Database db) async {
@@ -25,9 +54,7 @@ class TriviaDatabase {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         question TEXT NULL,
         image_url TEXT NULL,
-        option_type TEXT NULL,
-        template_id INTEGER NULL,
-        hide_label INTEGER NULL
+        template_id INTEGER NULL
       )
     ''');
   }
@@ -39,7 +66,7 @@ class TriviaDatabase {
         question_id INTEGER NULL,
         label TEXT NULL,
         content TEXT NULL,
-        correct INTEGER NULL,
+        is_correct INTEGER NULL,
         icon_url TEXT NULL
       )
     ''');
