@@ -16,6 +16,10 @@ class TriviaDatabase {
         if (newVersion == 2) {
           await _createQuestionsTable(db);
         }
+
+        if (oldVersion == 2 && newVersion == 3) {
+          await _createTemplatesTableV2(db);
+        }
       },
     );
   }
@@ -44,6 +48,18 @@ class TriviaDatabase {
         id INTEGER PRIMARY KEY,
         question TEXT NULL,
         option_type TEXT NULL
+      )
+    ''');
+  }
+
+  Future<void> _createTemplatesTableV2(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS templates (
+        id INTEGER PRIMARY KEY,
+        template_id INTEGER NULL,
+        question TEXT NULL,
+        option_type TEXT NULL,
+        source_data TEXT NULL
       )
     ''');
   }

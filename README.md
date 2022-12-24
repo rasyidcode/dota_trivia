@@ -1,16 +1,13 @@
 # dota_trivia
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Usefull links
+- https://vscode.dev/github/rasyidcode/dota_2_trivia_app
+- https://github.com/odota/dotaconstants/blob/master/build/heroes.json
+- https://dota2.fandom.com/wiki/Marci
+- https://dota2.fandom.com/wiki/Attributes
+- https://www.dota2.com/hero/marci
+- https://www.opendota.com/heroes/136
+- https://github.com/odota/web/blob/master/src/utility/index.jsx
+- https://www.youtube.com/watch?v=oEHK3utNk9Y&t=47s
+- https://www.youtube.com/watch?v=KOLnRnJ53hg
+- https://www.youtube.com/watch?v=AFK_IgzWtyo&t=90s

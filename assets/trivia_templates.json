@@ -3,12 +3,58 @@
         {
             "id": 1,
             "question": "What is the name of this hero?",
-            "option_type": "text"
+            "option_type": "text",
+            "source_data": [
+                "heroes"
+            ]
         },
         {
             "id": 2,
             "question": "Which of these hero named {replace}?",
-            "option_type": "image"
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 2,
+            "question": "Which of these hero has this stats?",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 3,
+            "question": "What is the primary attribute of this hero?",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 4,
+            "question": "Which of these hero has primary attribute of {replace}?",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 5,
+            "question": "Which hero has this ability?",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 6,
+            "question": "What is the name of this ability?",
+            "option_type": "text",
+            "source_data": [
+                "heroes"
+            ]
         }
     ]
 }
