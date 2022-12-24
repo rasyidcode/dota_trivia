@@ -26,12 +26,14 @@ class TriviaCubit extends Cubit<TriviaState> {
     emit(state.copyWith(fetchDataStatus: FetchDataStatus.loading));
 
     try {
-      await _triviaRepository.fetchTemplates();
-      await _triviaRepository.fetchHeroes();
+      await _triviaRepository.fetchData();
+
+      await Future.delayed(const Duration(seconds: 1));
 
       emit(state.copyWith(
           message: 'Fetch data completed',
-          fetchDataStatus: FetchDataStatus.success));
+          fetchDataStatus: FetchDataStatus.success,
+          timer: _duration));
     } on FetchDataException catch (e) {
       emit(state.copyWith(
           status: TriviaStateStatus.failure,
@@ -81,31 +83,15 @@ class TriviaCubit extends Cubit<TriviaState> {
   }
 
   void chooseOption(String opt) async {
-    emit(
-        state.copyWith(playerOption: opt, optionsStatus: OptionsStatus.locked));
-  }
-
-  void initTimer() {
-    emit(state.copyWith(timer: _duration));
+    emit(state.copyWith(
+      playerOption: opt,
+    ));
   }
 
   void validateOption() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    String? correctOpt = state.correctOption;
-    String? playerOpt = state.playerOption;
-    OptionsStatus optionsStatus = OptionsStatus.incorrect;
-
-    if (correctOpt != null && playerOpt != null) {
-      optionsStatus = playerOpt == correctOpt
-          ? OptionsStatus.correct
-          : OptionsStatus.incorrect;
-    }
-
-    emit(state.copyWith(
-        sessionStatus: SessionStatus.show,
-        message: 'Showing result',
-        optionsStatus: optionsStatus));
+    emit(state.copyWith(sessionStatus: SessionStatus.show));
 
     resetQuestion();
   }
@@ -124,16 +110,15 @@ class TriviaCubit extends Cubit<TriviaState> {
         emit(state.copyWith(
             timer: event,
             sessionStatus: SessionStatus.ongoing,
-            optionsStatus: OptionsStatus.active,
             message: 'Playing'));
 
         if (event == 0) {
           await Future.delayed(const Duration(seconds: 1));
 
           emit(state.copyWith(
-              sessionStatus: SessionStatus.checking,
-              message: 'Checking answer',
-              optionsStatus: OptionsStatus.locked));
+            sessionStatus: SessionStatus.checking,
+            message: 'Checking answer',
+          ));
         }
       }
     });
@@ -146,8 +131,17 @@ class TriviaCubit extends Cubit<TriviaState> {
   @override
   void onChange(Change<TriviaState> change) {
     super.onChange(change);
-    // if (kDebugMode) {
-    //   print(change);
-    // }
+
+    if (change.nextState.isReadyStartTrivia) {
+      getQuestion();
+    }
+
+    if (change.nextState.isTimerReady) {
+      startTimer();
+    }
+
+    if (change.nextState.isCheckingOption) {
+      validateOption();
+    }
   }
 }

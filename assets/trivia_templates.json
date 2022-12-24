@@ -4,6 +4,11 @@
             "id": 1,
             "question": "What is the name of this hero?",
             "option_type": "text"
+        },
+        {
+            "id": 2,
+            "question": "Which of these hero named {replace}?",
+            "option_type": "image"
         }
     ]
 }

@@ -1,7 +1,6 @@
 import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
-import 'package:dota_trivia/ui/trivia/trivia_page.dart';
 import 'package:dota_trivia/ui/trivia/widgets/empty_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +66,6 @@ class OptionsArea extends StatelessWidget {
         spacing: 8.0,
         runSpacing: 8.0,
         children: opts.map((opt) {
-          OptionsStatus? optStat = state.optionsStatus;
           String? playerOpt = state.playerOption;
           String? correctOpt = state.correctOption;
 
@@ -99,24 +97,6 @@ class OptionsArea extends StatelessWidget {
               }
             }
           }
-
-          // if (optStat != null) {
-          //   if (playerOpt != null) {
-          //     // if (playerOpt == opt.label) {
-          //     //   if (optStat == OptionsStatus.locked) {
-          //     //     linearGradient = _selectedOptionGradient();
-          //     //   } else if (optStat == OptionsStatus.correct) {
-          //     //     linearGradient = _correctOptionGradient();
-          //     //   } else if (optStat == OptionsStatus.incorrect) {
-          //     //     linearGradient = _incorrectOptionGradient();
-          //     //   }
-          //     // }
-          //   } else {
-          //     if (correctOpt != null && correctOpt == opt.label) {
-          //       linearGradient = _selectedOptionGradient();
-          //     }
-          //   }
-          // }
 
           return GestureDetector(
             onTap: () {

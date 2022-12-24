@@ -14,28 +14,41 @@ class TriviaRepository {
   final TriviaProvider _triviaProvider;
 
   /// Fetch template data from data source and save it locally
-  Future<void> fetchTemplates() async {
+  Future<void> _fetchTemplates() async {
     final templates = await _triviaDataSource.fetchTemplates();
 
     // clear templates
     await _triviaProvider.clearTemplates();
 
     await _triviaProvider
-        .saveTemplates(List<Map<String, dynamic>>.from(templates['data']));
+        .insertTemplates(List<Map<String, dynamic>>.from(templates['data']));
+  }
+
+  /// Fetch hero data from data source and save it locally
+  Future<void> _fetchHeroes() async {
+    final heroes = await _triviaDataSource.fetchHeroes();
+
+    await _triviaProvider.clearHeroes();
+
+    await _triviaProvider.insertHeroes(heroes);
+  }
+
+  Future<void> fetchData() async {
+    final isExistTemplates = await _triviaProvider.isTemplatesDataExist();
+    final isExistHeroes = await _triviaProvider.isHeroesDataExist();
+
+    if (!isExistTemplates) {
+      await _fetchTemplates();
+    }
+
+    if (!isExistHeroes) {
+      await _fetchHeroes();
+    }
   }
 
   Future<List<TemplateItem>> getTemplates() async {
     final templates = await _triviaProvider.getTemplates();
     return templates;
-  }
-
-  /// Fetch hero data from data source and save it locally
-  Future<void> fetchHeroes() async {
-    final heroes = await _triviaDataSource.fetchHeroes();
-
-    await _triviaProvider.clearHeroes();
-
-    await _triviaProvider.saveHeroes(heroes);
   }
 
   /// Generate a question based on template & save it locally to database
