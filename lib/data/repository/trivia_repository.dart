@@ -26,8 +26,7 @@ class TriviaRepository {
     }
   }
 
-  /// Get a question from database
-  ///
+  /// Get a question data
   /// Throws an [TriviaRepositoryException] if question id is null
   /// Returns [QuestionItem] object
   Future<QuestionItem> getQuestion() async {
@@ -43,6 +42,7 @@ class TriviaRepository {
   }
 
   /// Generate a question based on template & save it locally to database
+  /// Throws an [TriviaRepositoryException] if template id is not found
   Future<void> generateQuestion() async {
     final QuestionItem question;
     final List<OptionItem> options;

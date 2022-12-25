@@ -21,6 +21,7 @@ class TriviaState extends Equatable {
     this.fetchDataStatus,
     this.sessionStatus,
     this.playerOption,
+    this.points,
   });
 
   final TriviaStateStatus status;
@@ -30,6 +31,7 @@ class TriviaState extends Equatable {
   final FetchDataStatus? fetchDataStatus;
   final SessionStatus? sessionStatus;
   final String? playerOption;
+  final int? points;
 
   bool get isLoadingQuestion => status == TriviaStateStatus.loading;
 
@@ -80,6 +82,7 @@ class TriviaState extends Equatable {
       fetchDataStatus: FetchDataStatus.success,
       message: 'Load next question',
       question: question,
+      points: points,
     );
   }
 }
