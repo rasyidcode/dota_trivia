@@ -4,27 +4,12 @@ import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
 import 'package:dota_trivia/data/network/trivia_data_source.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
-import 'package:dota_trivia/data/repository/trivia_repository_exception.dart';
 
 class TriviaRepository {
   TriviaRepository(this._triviaDataSource, this._triviaProvider);
 
   final TriviaDataSource _triviaDataSource;
   final TriviaProvider _triviaProvider;
-
-  /// Fetch data
-  Future<void> fetchData() async {
-    final isExistTemplates = await _triviaProvider.isTemplatesDataExist();
-    final isExistHeroes = await _triviaProvider.isHeroesDataExist();
-
-    if (!isExistTemplates) {
-      await _fetchTemplates();
-    }
-
-    if (!isExistHeroes) {
-      await _fetchHeroes();
-    }
-  }
 
   /// Get a question data
   /// Throws an [TriviaRepositoryException] if question id is null
@@ -80,24 +65,9 @@ class TriviaRepository {
     int qid = await _triviaProvider.insertQuestion(question);
     await _triviaProvider.insertOptions(options, qid);
   }
+}
 
-  /// Fetch template data from data source and save it locally
-  Future<void> _fetchTemplates() async {
-    final templates = await _triviaDataSource.fetchTemplates();
-
-    // clear templates
-    await _triviaProvider.clearTemplates();
-
-    await _triviaProvider
-        .insertTemplates(List<Map<String, dynamic>>.from(templates['data']));
-  }
-
-  /// Fetch hero data from data source and save it locally
-  Future<void> _fetchHeroes() async {
-    final heroes = await _triviaDataSource.fetchHeroes();
-
-    await _triviaProvider.clearHeroes();
-
-    await _triviaProvider.insertHeroes(heroes);
-  }
+class TriviaRepositoryException implements Exception {
+  TriviaRepositoryException(this.message);
+  final String message;
 }

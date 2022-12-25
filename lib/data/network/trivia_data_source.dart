@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dota_trivia/constants/apis.dart';
-import 'package:dota_trivia/data/network/fetch_data_exception.dart';
 import 'package:http/http.dart' as http;
 
 class TriviaDataSource {
@@ -26,4 +25,9 @@ class TriviaDataSource {
     }
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
+}
+
+class FetchDataException implements Exception {
+  FetchDataException();
+  final message = 'Error fetching data';
 }

@@ -3,35 +3,12 @@ import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/data/model/hero_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
 import 'package:dota_trivia/data/model/template_item.dart';
-import 'package:dota_trivia/data/provider/trivia_provider_exception.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TriviaProvider {
   TriviaProvider(this._triviaDatabase);
 
   final TriviaDatabase _triviaDatabase;
-
-  Future<void> insertHeroes(Map<String, dynamic> heroes) async {
-    Batch? batch = (await _triviaDatabase.db)?.batch();
-
-    heroes.forEach(
-      (_, hero) => batch?.rawInsert(
-        'INSERT INTO heroes (code, name, primary_attr, attack_type, image_url, icon_url, move_speed, legs) VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
-        [
-          hero['name'],
-          hero['localized_name'],
-          hero['primary_attr'],
-          hero['attack_type'],
-          hero['img'],
-          hero['icon'],
-          hero['move_speed'],
-          hero['legs'],
-        ],
-      ),
-    );
-
-    await batch?.commit(noResult: true);
-  }
 
   Future<List<HeroItem>> getHeroes() async {
     final heroes = await (await _triviaDatabase.db)
@@ -46,56 +23,6 @@ class TriviaProvider {
     }
 
     return heroes.map((h) => HeroItem.fromJson(h)).toList();
-  }
-
-  Future<void> clearHeroes() async {
-    await (await _triviaDatabase.db)?.rawDelete('DELETE FROM heroes');
-  }
-
-  Future<bool> isHeroesDataExist() async {
-    final counts = await (await _triviaDatabase.db)
-        ?.rawQuery('SELECT COUNT(*) as count FROM heroes');
-
-    if (counts == null) {
-      throw TriviaProviderException('Counts hero returns null');
-    }
-
-    if (counts.isEmpty) {
-      throw TriviaProviderException('Counts hero returns empty');
-    }
-
-    int? count = counts.first['count'] as int?;
-    if (count == null) {
-      throw TriviaProviderException('Count is not defined');
-    }
-
-    return count > 0;
-  }
-
-  Future<void> clearTemplates() async {
-    await (await _triviaDatabase.db)?.rawDelete('DELETE FROM templates');
-  }
-
-  Future<void> insertTemplates(List<Map<String, dynamic>> templates) async {
-    Batch? batch = (await _triviaDatabase.db)?.batch();
-
-    for (var template in templates) {
-      batch?.rawInsert(
-        'INSERT INTO templates (id, question, option_type) VALUES(?,?,?)',
-        [
-          template['id'],
-          template['question'],
-          template['option_type'],
-        ],
-      );
-    }
-
-    try {
-      await batch?.commit(noResult: true);
-    } on DatabaseException catch (e) {
-      throw TriviaProviderException(
-          'Error: ${e.result}, ${e.getResultCode()}, ${e.toString()}');
-    }
   }
 
   Future<TemplateItem> getTemplateById(int id) async {
@@ -142,26 +69,6 @@ class TriviaProvider {
 
     return (template.map((t) => TemplateItem.fromJson(t)).toList()..shuffle())
         .first;
-  }
-
-  Future<bool> isTemplatesDataExist() async {
-    final counts = await (await _triviaDatabase.db)
-        ?.rawQuery('SELECT COUNT(*) as count FROM templates');
-
-    if (counts == null) {
-      throw TriviaProviderException('Counts template returns null');
-    }
-
-    if (counts.isEmpty) {
-      throw TriviaProviderException('Counts template returns empty');
-    }
-
-    int? count = counts.first['count'] as int?;
-    if (count == null) {
-      throw TriviaProviderException('Count is not defined');
-    }
-
-    return count > 0;
   }
 
   /// Insert a new question
@@ -241,4 +148,10 @@ class TriviaProvider {
             }))
         .toList());
   }
+}
+
+class TriviaProviderException implements Exception {
+  TriviaProviderException(this.message);
+
+  final String message;
 }

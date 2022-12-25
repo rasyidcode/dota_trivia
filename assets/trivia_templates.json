@@ -3,6 +3,7 @@
         {
             "id": 1,
             "question": "What is the name of this hero?",
+            "content_type": "image",
             "option_type": "text",
             "source_data": [
                 "heroes"
@@ -10,15 +11,8 @@
         },
         {
             "id": 2,
-            "question": "Which of these hero named {replace}?",
-            "option_type": "image",
-            "source_data": [
-                "heroes"
-            ]
-        },
-        {
-            "id": 2,
-            "question": "Which of these hero has this stats?",
+            "question": "What hero has the following name?",
+            "content_type": "text",
             "option_type": "image",
             "source_data": [
                 "heroes"
@@ -26,15 +20,17 @@
         },
         {
             "id": 3,
-            "question": "What is the primary attribute of this hero?",
-            "option_type": "text_icon",
+            "question": "What hero has the following primary attribute?",
+            "content_type": "text_icon",
+            "option_type": "image",
             "source_data": [
                 "heroes"
             ]
         },
         {
             "id": 4,
-            "question": "Which of these hero has primary attribute of {replace}?",
+            "question": "What hero has the following attack type?",
+            "content_type": "text_icon",
             "option_type": "image",
             "source_data": [
                 "heroes"
@@ -42,7 +38,8 @@
         },
         {
             "id": 5,
-            "question": "Which hero has this ability?",
+            "question": "What hero has the following attributes?",
+            "content_type": "hero_attributes",
             "option_type": "image",
             "source_data": [
                 "heroes"
@@ -50,10 +47,156 @@
         },
         {
             "id": 6,
-            "question": "What is the name of this ability?",
-            "option_type": "text",
+            "question": "What is the base movement speed for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
             "source_data": [
                 "heroes"
+            ]
+        },
+        {
+            "id": 7,
+            "question": "What is the base attack for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 8,
+            "question": "What is the base armor for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 9,
+            "question": "What is the base health and mana for {replace}?",
+            "content_type": "image",
+            "option_type": "custom_health_mana_bar",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 10,
+            "question": "What hero has the following base health and mana?",
+            "content_type": "custom_health_mana_bar",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 11,
+            "question": "What hero has the following abillity?",
+            "content_type": "image",
+            "option_type": "image",
+            "source_data": [
+                "heroes_abilities",
+                "abilities"
+            ]
+        },
+        {
+            "id": 12,
+            "question": "What is the name of this ability?",
+            "content_type": "image",
+            "option_type": "text",
+            "source_data": [
+                "abilities"
+            ]
+        },
+        {
+            "id": 13,
+            "question": "What is the mana cost for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "abilities"
+            ]
+        },
+        {
+            "id": 14,
+            "question": "What is the cooldown for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "abilities"
+            ]
+        },
+        {
+            "id": 15,
+            "question": "What ability has the following lore?",
+            "content_type": "text_lore",
+            "option_type": "image",
+            "source_data": [
+                "abilities"
+            ]
+        },
+        {
+            "id": 16,
+            "question": "What is the damage type for {replace}?",
+            "content_type": "image",
+            "option_type": "text",
+            "source_data": [
+                "abilities"
+            ]
+        },
+        {
+            "id": 17,
+            "question": "What is the name of this item?",
+            "content_type": "image",
+            "option_type": "text",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 18,
+            "question": "What is the cost of {replace}?",
+            "content_type": "image",
+            "option_type": "text",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 19,
+            "question": "What item has the following lore?",
+            "content_type": "text_lore",
+            "option_type": "image",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 20,
+            "question": "What is the mana cost for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 21,
+            "question": "What is the cooldown for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 22,
+            "question": "What item has the following passives?",
+            "content_type": "custom_item_passives",
+            "option_type": "image",
+            "source_data": [
+                "items"
             ]
         }
     ]

@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dota_trivia/data/network/fetch_data_exception.dart';
-import 'package:dota_trivia/data/provider/trivia_provider_exception.dart';
+import 'package:dota_trivia/data/network/trivia_data_source.dart';
+import 'package:dota_trivia/data/provider/trivia_provider.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
-import 'package:dota_trivia/data/repository/trivia_repository_exception.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 
 class TriviaCubit extends Cubit<TriviaState> {
@@ -26,7 +25,7 @@ class TriviaCubit extends Cubit<TriviaState> {
     emit(state.copyWith(fetchDataStatus: FetchDataStatus.loading));
 
     try {
-      await _triviaRepository.fetchData();
+      // await _triviaRepository.fetchData();
 
       await Future.delayed(const Duration(seconds: 1));
 
