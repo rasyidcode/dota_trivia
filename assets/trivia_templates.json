@@ -92,7 +92,7 @@
         },
         {
             "id": 11,
-            "question": "What hero has the following abillity?",
+            "question": "Which hero has this ability?",
             "content_type": "image",
             "option_type": "image",
             "source_data": [
@@ -174,7 +174,7 @@
         },
         {
             "id": 20,
-            "question": "What is the mana cost for {replace}?",
+            "question": "What is the mana cost of {replace}?",
             "content_type": "image",
             "option_type": "text_icon",
             "source_data": [
@@ -183,7 +183,7 @@
         },
         {
             "id": 21,
-            "question": "What is the cooldown for {replace}?",
+            "question": "What is the cooldown of {replace}?",
             "content_type": "image",
             "option_type": "text_icon",
             "source_data": [
@@ -194,6 +194,57 @@
             "id": 22,
             "question": "What item has the following passives?",
             "content_type": "custom_item_passives",
+            "option_type": "image",
+            "source_data": [
+                "items"
+            ]
+        },
+        {
+            "id": 23,
+            "question": "What spell is invoked by this combination?",
+            "content_type": "ques_wex_exort",
+            "option_type": "image",
+            "source_data": [
+                "abilities",
+                "heroes_abilities"
+            ]
+        },
+        {
+            "id": 24,
+            "question": "What ability plays this sound?",
+            "content_type": "sound_ability",
+            "option_type": "image",
+            "source_data": [
+                "abilities",
+                "heroes_abilities",
+                "dota2_fandom"
+            ]
+        },
+        {
+            "id": 25,
+            "question": "What ability plays this sound?",
+            "content_type": "sound_ability",
+            "option_type": "image",
+            "source_data": [
+                "abilities",
+                "heroes_abilities",
+                "dota2_fandom"
+            ]
+        },
+        {
+            "id": 26,
+            "question": "What hero has this attack sound?",
+            "content_type": "sound_hero_attack",
+            "option_type": "image",
+            "source_data": [
+                "heroes",
+                "dota2_fandom"
+            ]
+        },
+        {
+            "id": 27,
+            "question": "Which item has the following combinations?",
+            "content_type": "item_combinations",
             "option_type": "image",
             "source_data": [
                 "items"
