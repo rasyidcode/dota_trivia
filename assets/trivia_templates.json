@@ -249,6 +249,15 @@
             "source_data": [
                 "items"
             ]
+        },
+        {
+            "id": 28,
+            "question": "What is the tier of the following neutral item?",
+            "content_type": "image",
+            "option_type": "text",
+            "source_data": [
+                "items"
+            ]
         }
     ]
 }
