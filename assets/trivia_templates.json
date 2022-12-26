@@ -11,29 +11,30 @@
         },
         {
             "id": 2,
-            "question": "What hero has the following name?",
-            "content_type": "text",
+            "question": "What hero has this attack sound?",
+            "content_type": "sound_hero_attack",
             "option_type": "image",
             "source_data": [
-                "heroes"
+                "heroes",
+                "dota2_fandom"
             ]
         },
         {
             "id": 3,
-            "question": "What hero has the following primary attribute?",
-            "content_type": "text_icon",
+            "question": "Which item has the following combinations?",
+            "content_type": "item_combinations",
             "option_type": "image",
             "source_data": [
-                "heroes"
+                "items"
             ]
         },
         {
             "id": 4,
-            "question": "What hero has the following attack type?",
-            "content_type": "text_icon",
-            "option_type": "image",
+            "question": "What is the tier of the following neutral item?",
+            "content_type": "image",
+            "option_type": "text",
             "source_data": [
-                "heroes"
+                "items"
             ]
         },
         {
@@ -83,11 +84,12 @@
         },
         {
             "id": 10,
-            "question": "What hero has the following base health and mana?",
-            "content_type": "custom_health_mana_bar",
+            "question": "What ability plays this sound?",
+            "content_type": "sound_ability",
             "option_type": "image",
             "source_data": [
-                "heroes"
+                "abilities",
+                "dota2_fandom"
             ]
         },
         {
@@ -96,7 +98,7 @@
             "content_type": "image",
             "option_type": "image",
             "source_data": [
-                "heroes_abilities",
+                "heroes",
                 "abilities"
             ]
         },
@@ -192,71 +194,12 @@
         },
         {
             "id": 22,
-            "question": "What item has the following passives?",
-            "content_type": "custom_item_passives",
-            "option_type": "image",
-            "source_data": [
-                "items"
-            ]
-        },
-        {
-            "id": 23,
             "question": "What spell is invoked by this combination?",
             "content_type": "ques_wex_exort",
             "option_type": "image",
             "source_data": [
                 "abilities",
-                "heroes_abilities"
-            ]
-        },
-        {
-            "id": 24,
-            "question": "What ability plays this sound?",
-            "content_type": "sound_ability",
-            "option_type": "image",
-            "source_data": [
-                "abilities",
-                "heroes_abilities",
-                "dota2_fandom"
-            ]
-        },
-        {
-            "id": 25,
-            "question": "What ability plays this sound?",
-            "content_type": "sound_ability",
-            "option_type": "image",
-            "source_data": [
-                "abilities",
-                "heroes_abilities",
-                "dota2_fandom"
-            ]
-        },
-        {
-            "id": 26,
-            "question": "What hero has this attack sound?",
-            "content_type": "sound_hero_attack",
-            "option_type": "image",
-            "source_data": [
-                "heroes",
-                "dota2_fandom"
-            ]
-        },
-        {
-            "id": 27,
-            "question": "Which item has the following combinations?",
-            "content_type": "item_combinations",
-            "option_type": "image",
-            "source_data": [
-                "items"
-            ]
-        },
-        {
-            "id": 28,
-            "question": "What is the tier of the following neutral item?",
-            "content_type": "image",
-            "option_type": "text",
-            "source_data": [
-                "items"
+                "invoker"
             ]
         }
     ]

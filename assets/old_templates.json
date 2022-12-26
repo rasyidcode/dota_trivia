@@ -1,0 +1,49 @@
+{
+    "data": [
+        {
+            "id": 2,
+            "question": "What hero has the following name?",
+            "content_type": "text",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 3,
+            "question": "What hero has the following primary attribute?",
+            "content_type": "text_icon",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 4,
+            "question": "What hero has the following attack type?",
+            "content_type": "text_icon",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 10,
+            "question": "What hero has the following base health and mana?",
+            "content_type": "custom_health_mana_bar",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ]
+        },
+        {
+            "id": 22,
+            "question": "What item has the following passives?",
+            "content_type": "custom_item_passives",
+            "option_type": "image",
+            "source_data": [
+                "items"
+            ]
+        }
+    ]
+}
