@@ -195,7 +195,7 @@
         {
             "id": 22,
             "question": "What spell is invoked by this combination?",
-            "content_type": "ques_wex_exort",
+            "content_type": "quas_wex_exort",
             "option_type": "image",
             "source_data": [
                 "abilities",
