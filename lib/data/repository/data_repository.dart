@@ -20,7 +20,7 @@ class DataRepository {
   Future<String> _fetchTemplates() async {
     final isTemplatesDataExist = await _dataProvider.isTemplatesDataExist();
 
-    if (isTemplatesDataExist) {
+    if (!isTemplatesDataExist) {
       final templates = await _triviaDataSource.fetchTemplates();
 
       await _dataProvider.clearTemplates();
@@ -37,7 +37,7 @@ class DataRepository {
   Future<String> _fetchHeroes() async {
     final isHeroesDataExist = await _dataProvider.isHeroesDataExist();
 
-    if (isHeroesDataExist) {
+    if (!isHeroesDataExist) {
       final heroes = await _triviaDataSource.fetchHeroes();
       final abilities = await _triviaDataSource.fetchHeroAbilities();
 
@@ -53,7 +53,7 @@ class DataRepository {
   Future<String> _fetchItems() async {
     final isItemsDataExist = await _dataProvider.isItemsDataExist();
 
-    if (isItemsDataExist) {
+    if (!isItemsDataExist) {
       final items = await _triviaDataSource.fetchItems();
 
       await _dataProvider.clearItems();
@@ -68,7 +68,7 @@ class DataRepository {
   Future<String> _fetchAbilities() async {
     final isAbilitiesDataExist = await _dataProvider.isAbilitiesDataExist();
 
-    if (isAbilitiesDataExist) {
+    if (!isAbilitiesDataExist) {
       final abilities = await _triviaDataSource.fetchAbilities();
 
       await _dataProvider.clearAbilities();
