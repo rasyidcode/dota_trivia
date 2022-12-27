@@ -5,7 +5,7 @@ class TriviaDatabase {
   TriviaDatabase(String path) {
     db = openDatabase(
       join(path, 'dota_trivia.db'),
-      version: 3,
+      version: 12,
       onCreate: ((db, version) async {
         // templates data
         await _createTemplatesTable(db);
@@ -13,7 +13,6 @@ class TriviaDatabase {
         // odotaconstants data
         await _createHeroesTable(db);
         await _createItemsTable(db);
-        await _createHeroesAbilitiesTable(db);
         await _createAbilitiesTable(db);
 
         // game data
@@ -23,16 +22,124 @@ class TriviaDatabase {
         await _createTriviaSessionsTable(db);
         await _createTriviaLogsTable(db);
       }),
-      // onUpgrade: (db, oldVersion, newVersion) async {
-      //   if (oldVersion == 2 && newVersion == 3) {
-      //     await _createTemplatesTableV2(db);
-      //     await _upgradeHeroesTable(db);
-      //   }
-      // },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (newVersion == 6) {
+          await _upgradeTemplatesTable(db);
+        }
+
+        if (newVersion == 10) {
+          await _upgradeHeroesTable(db);
+        }
+
+        if (newVersion == 11) {
+          await _createItemsTable(db);
+        }
+
+        if (newVersion == 12) {
+          await _createAbilitiesTable(db);
+        }
+      },
     );
   }
 
   Future<Database>? db;
+
+  /// Create templates table
+  Future<void> _createTemplatesTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS templates (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        template_id INTEGER NULL,
+        question TEXT NULL,
+        content_type TEXT NULL,
+        option_type TEXT NULL,
+        source_data TEXT NULL
+      )
+    ''');
+  }
+
+  /// Create heroes table
+  Future<void> _createHeroesTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS heroes (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          hero_id INTEGER NULL,
+          name TEXT NULL,
+          localized_name TEXT NULL,
+          primary_attr TEXT NULL,
+          attack_type TEXT NULL,
+          roles TEXT NULL,
+          img TEXT NULL,
+          icon TEXT NULL,
+          base_health INTEGER NULL,
+          base_health_regen REAL NULL,
+          base_mana INTEGER NULL,
+          base_mana_regen REAL NULL,
+          base_armor REAL NULL,
+          base_mr INTEGER NULL,
+          base_attack_min INTEGER NULL,
+          base_attack_max INTEGER NULL,
+          base_str INTEGER NULL,
+          base_agi INTEGER NULL,
+          base_int INTEGER NULL,
+          str_gain REAL NULL,
+          agi_gain REAL NULL,
+          int_gain REAL NULL,
+          attack_range INTEGER NULL,
+          projectile_speed INTEGER NULL,
+          attack_rate REAL NULL,
+          base_attack_time INTEGER NULL,
+          attack_point REAL NULL,
+          move_speed INTEGER NULL,
+          turn_rate REAL NULL,
+          cm_enabled INTEGER NULL,
+          legs INTEGER NULL,
+          day_vision INTEGER NULL,
+          night_vision INTEGER NULL,
+          abilities TEXT NULL
+        )
+    ''');
+  }
+
+  Future<void> _createItemsTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        code TEXT NULL,
+        item_id INTEGER NULL,
+        img TEXT NULL,
+        dname TEXT NULL,
+        qual TEXT NULL,
+        cost INTEGER NULL,
+        notes TEXT NULL,
+        mc INTEGER NULL,
+        cd INTEGER NULL,
+        lore TEXT NULL,
+        components TEXT NULL,
+        created INTEGER NULL,
+        charges INTEGER NULL,
+        tier INTEGER NULL
+      )
+    ''');
+  }
+
+  Future<void> _createAbilitiesTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS abilities(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        code TEXT NULL,
+        dname TEXT NULL,
+        behaviour TEXT NULL,
+        dmg_type TEXT NULL,
+        bkbpierce TEXT NULL,
+        desc TEXT NULL,
+        lore TEXT NULL,
+        img TEXT NULL,
+        cd TEXT NULL,
+        mc TEXT NULL
+      )
+    ''');
+  }
 
   // Create player_stats table
   Future<void> _createPlayerStatsTable(Database db) async {
@@ -98,109 +205,15 @@ class TriviaDatabase {
     ''');
   }
 
-  /// Create templates table
-  Future<void> _createTemplatesTable(Database db) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS templates (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        template_id INTEGER NULL,
-        question TEXT NULL,
-        option_type TEXT NULL,
-        source_data TEXT NULL
-      )
-    ''');
+  /// Upgrade templates table
+  Future<void> _upgradeTemplatesTable(Database db) async {
+    await db.execute('DROP TABLE templates');
+    await _createTemplatesTable(db);
   }
 
-  /// Create heroes table
-  Future<void> _createHeroesTable(Database db) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS heroes (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          hero_id INTEGER NULL,
-          name TEXT NULL,
-          localized_name TEXT NULL,
-          primary_attr TEXT NULL,
-          roles TEXT NULL,
-          img TEXT NULL,
-          icon TEXT NULL,
-          base_health INTEGER NULL,
-          base_health_regen REAL NULL,
-          base_mana INTEGER NULL,
-          base_mana_regen REAL NULL,
-          base_armor REAL NULL,
-          base_mr INTEGER NULL,
-          base_attack_min INTEGER NULL,
-          base_attack_max INTEGER NULL,
-          base_str INTEGER NULL,
-          base_agi INTEGER NULL,
-          base_int INTEGER NULL,
-          str_gain REAL NULL,
-          agi_gain REAL NULL,
-          int_gain REAL NULL,
-          attack_range INTEGER NULL,
-          projectile_speed INTEGER NULL,
-          attack_rate REAL NULL,
-          base_attack_time INTEGER NULL,
-          attack_point REAL NULL,
-          move_speed INTEGER NULL,
-          turn_rate REAL NULL,
-          cm_enabled INTEGER NULL,
-          legs INTEGER NULL,
-          day_vision INTEGER NULL,
-          night_vision INTEGER NULL
-        )
-    ''');
-  }
-
-  Future<void> _createItemsTable(Database db) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS items (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        code TEXT NULL,
-        item_id INTEGER NULL,
-        hints TEXT,
-        img TEXT NULL,
-        dname TEXT NULL,
-        qual TEXT NULL,
-        cost INTEGER NULL,
-        notes TEXT NULL,
-        attrib TEXT NULL,
-        mc INTEGER NULL,
-        cd INTEGER NULL,
-        lore TEXT NULL,
-        components TEXT NULL,
-        created INTEGER NULL,
-        charges INTEGER NULL
-      )
-    ''');
-  }
-
-  Future<void> _createHeroesAbilitiesTable(Database db) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS hero_abilities(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        hero_code TEXT NULL,
-        abilities TEXT NULL,
-        talents TEXT NULL
-      )
-    ''');
-  }
-
-  Future<void> _createAbilitiesTable(Database db) async {
-    await db.execute('''
-      CREATE TABLE IF NOT EXISTS abilities(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        code TEXT NULL,
-        dname TEXT NULL,
-        behaviour TEXT NULL,
-        dmg_type TEXT NULL,
-        bkbpierce TEXT NULL,
-        desc TEXT NULL,
-        lore TEXT NULL,
-        img TEXT NULL,
-        cd TEXT NULL,
-        mc TEXT NULL
-      )
-    ''');
+  /// Upgrade heroes table
+  Future<void> _upgradeHeroesTable(Database db) async {
+    await db.execute('DROP TABLE heroes');
+    await _createHeroesTable(db);
   }
 }

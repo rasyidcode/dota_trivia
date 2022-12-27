@@ -25,6 +25,33 @@ class TriviaDataSource {
     }
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
+
+  Future<Map<String, dynamic>> fetchItems() async {
+    final response =
+        await client.get(Uri.parse('${Apis.odotaGithubURL}/items.json'));
+    if (response.statusCode != 200) {
+      throw FetchDataException();
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> fetchHeroAbilities() async {
+    final response = await client
+        .get(Uri.parse('${Apis.odotaGithubURL}/hero_abilities.json'));
+    if (response.statusCode != 200) {
+      throw FetchDataException();
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> fetchAbilities() async {
+    final response =
+        await client.get(Uri.parse('${Apis.odotaGithubURL}/abilities.json'));
+    if (response.statusCode != 200) {
+      throw FetchDataException();
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
 }
 
 class FetchDataException implements Exception {

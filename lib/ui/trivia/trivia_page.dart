@@ -1,3 +1,4 @@
+import 'package:dota_trivia/constants/colors.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:dota_trivia/ui/trivia/widgets/options_area.dart';
@@ -30,7 +31,7 @@ class _TriviaPageState extends State<TriviaPage> {
     return BlocProvider(
       create: (_) => _triviaCubit,
       child: Scaffold(
-        backgroundColor: Colors.black.withRed(20),
+        backgroundColor: kBackgroundColor,
         body: SafeArea(
           child: Column(
             children: [

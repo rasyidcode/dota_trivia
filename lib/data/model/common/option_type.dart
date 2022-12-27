@@ -6,5 +6,7 @@ enum OptionType {
   @JsonValue('text_icon')
   textIcon,
   @JsonValue('image')
-  image
+  image,
+  @JsonValue('custom_health_mana_bar')
+  customHealthManaBar
 }

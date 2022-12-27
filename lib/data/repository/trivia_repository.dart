@@ -45,7 +45,7 @@ class TriviaRepository {
 
         question = QuestionItem.fromJson({
           'question': template.question,
-          'image_url': '${Apis.steamAssetURL}/${correctHero.imageUrl}',
+          // 'image_url': '${Apis.steamAssetURL}/${correctHero.imageUrl}',
           'template_id': template.id,
         });
         options = (optHeroes..shuffle())
