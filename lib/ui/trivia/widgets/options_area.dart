@@ -72,36 +72,36 @@ class OptionsArea extends StatelessWidget {
           LinearGradient linearGradient =
               const LinearGradient(colors: [Colors.black, Colors.black]);
 
-          if (state.isTimerOngoing || state.isCheckingOption) {
-            if (playerOpt != null &&
-                opt.label != null &&
-                opt.label == playerOpt) {
-              linearGradient = _selectedOptionGradient();
-            } else {
-              linearGradient = _activeOptionGradient();
-            }
-          } else if (state.isShowResult) {
-            if (playerOpt == null &&
-                correctOpt != null &&
-                correctOpt == opt.label) {
-              linearGradient = _selectedOptionGradient();
-            }
+          // if (state.isTimerOngoing || state.isCheckingOption) {
+          //   if (playerOpt != null &&
+          //       opt.label != null &&
+          //       opt.label == playerOpt) {
+          //     linearGradient = _selectedOptionGradient();
+          //   } else {
+          //     linearGradient = _activeOptionGradient();
+          //   }
+          // } else if (state.isShowResult) {
+          //   if (playerOpt == null &&
+          //       correctOpt != null &&
+          //       correctOpt == opt.label) {
+          //     linearGradient = _selectedOptionGradient();
+          //   }
 
-            if (playerOpt != null && correctOpt != null && opt.label != null) {
-              if (opt.label == playerOpt) {
-                if (playerOpt == correctOpt) {
-                  linearGradient = _correctOptionGradient();
-                } else {
-                  linearGradient = _incorrectOptionGradient();
-                }
-              }
-            }
-          }
+          //   if (playerOpt != null && correctOpt != null && opt.label != null) {
+          //     if (opt.label == playerOpt) {
+          //       if (playerOpt == correctOpt) {
+          //         linearGradient = _correctOptionGradient();
+          //       } else {
+          //         linearGradient = _incorrectOptionGradient();
+          //       }
+          //     }
+          //   }
+          // }
 
           return GestureDetector(
             onTap: () {
               if (opt.label != null &&
-                  state.isTimerOngoing &&
+                  state.isTriviaOngoing &&
                   playerOpt == null) {
                 BlocProvider.of<TriviaCubit>(context).chooseOption(opt.label!);
               }
@@ -135,7 +135,7 @@ class OptionsArea extends StatelessWidget {
                           ?.copyWith(color: Colors.white),
                     ),
                   ),
-                  if (state.isShowResult &&
+                  if (state.isTriviaShowingResult &&
                       playerOpt != null &&
                       opt.label != null &&
                       playerOpt == opt.label)

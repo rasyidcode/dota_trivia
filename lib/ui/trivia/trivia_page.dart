@@ -23,7 +23,7 @@ class _TriviaPageState extends State<TriviaPage> {
   void initState() {
     super.initState();
 
-    _triviaCubit.fetchData();
+    _triviaCubit.getQuestion();
   }
 
   @override
@@ -34,26 +34,26 @@ class _TriviaPageState extends State<TriviaPage> {
         backgroundColor: kBackgroundColor,
         body: SafeArea(
           child: Column(
-            children: [
-              const TopBar(),
-              const QuestionArea(),
-              const SizedBox(height: 8.0),
-              const OptionsArea(),
-              const SizedBox(height: 8.0),
-              const TimerArea(),
-              SizedBox(
-                width: double.infinity,
-                child: BlocSelector<TriviaCubit, TriviaState, String?>(
-                  selector: (state) => state.message,
-                  builder: (context, message) => Text(
-                    message ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-              )
+            children: const [
+              TopBar(),
+              QuestionArea(),
+              SizedBox(height: 8.0),
+              OptionsArea(),
+              SizedBox(height: 8.0),
+              TimerArea(),
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: BlocSelector<TriviaCubit, TriviaState, String?>(
+              //     selector: (state) => state.message,
+              //     builder: (context, message) => Text(
+              //       message ?? '',
+              //       style: Theme.of(context)
+              //           .textTheme
+              //           .bodySmall
+              //           ?.copyWith(color: Colors.white),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

@@ -148,6 +148,8 @@ class TriviaProvider {
             }))
         .toList());
   }
+
+  ///
 }
 
 class TriviaProviderException implements Exception {

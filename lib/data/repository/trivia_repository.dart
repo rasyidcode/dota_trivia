@@ -1,14 +1,11 @@
-import 'package:dota_trivia/constants/apis.dart';
 import 'package:dota_trivia/constants/templates.dart';
 import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
-import 'package:dota_trivia/data/network/trivia_data_source.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
 
 class TriviaRepository {
-  TriviaRepository(this._triviaDataSource, this._triviaProvider);
+  TriviaRepository(this._triviaProvider);
 
-  final TriviaDataSource _triviaDataSource;
   final TriviaProvider _triviaProvider;
 
   /// Get a question data
@@ -21,9 +18,8 @@ class TriviaRepository {
     }
 
     final options = await _triviaProvider.getOptions(question.id!);
-    question.options = options;
 
-    return question;
+    return question.copyWith(options: options);
   }
 
   /// Generate a question based on template & save it locally to database

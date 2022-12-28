@@ -2,6 +2,7 @@ import 'package:dota_trivia/constants/colors.dart';
 import 'package:dota_trivia/ui/home/home_page.dart';
 import 'package:dota_trivia/ui/splash/cubit/splash_cubit.dart';
 import 'package:dota_trivia/ui/splash/cubit/splash_state.dart';
+import 'package:dota_trivia/ui/splash/widgets/loading_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kiwi/kiwi.dart';
@@ -30,12 +31,11 @@ class _SplashPageState extends State<SplashPage> {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state.isFetchDataSuccess) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => const HomePage()));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const HomePage()));
           }
         },
         child: Scaffold(
-          backgroundColor: kBackgroundColor,
           body: Stack(
             children: [
               Center(
@@ -45,23 +45,12 @@ class _SplashPageState extends State<SplashPage> {
                 ),
               ),
               Column(
-                children: [
-                  const Spacer(),
-                  const Center(
-                    child: CircularProgressIndicator(color: kDeepOrangeColor),
-                  ),
-                  const SizedBox(height: 8.0),
-                  BlocSelector<SplashCubit, SplashState, String?>(
-                    selector: (state) => state.message,
-                    builder: (context, msg) {
-                      return Text(msg ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(color: Colors.white));
-                    },
-                  ),
-                  const SizedBox(height: 16.0)
+                children: const [
+                  Spacer(),
+                  Center(child: CircularProgressIndicator()),
+                  SizedBox(height: 8.0),
+                  LoadingStatus(),
+                  SizedBox(height: 16.0)
                 ],
               )
             ],

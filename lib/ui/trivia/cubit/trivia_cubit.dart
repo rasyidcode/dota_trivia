@@ -1,83 +1,44 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dota_trivia/data/network/trivia_data_source.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
+import 'package:dota_trivia/data/ticker/ticker_data.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 
 class TriviaCubit extends Cubit<TriviaState> {
-  TriviaCubit(this._triviaRepository)
-      : super(const TriviaState(
-            status: TriviaStateStatus.initial, message: 'Initializing...'));
+  TriviaCubit(this._triviaRepository, this._tickerData)
+      : super(const TriviaState());
 
   final TriviaRepository _triviaRepository;
+  final TickerData _tickerData;
   final int _duration = 11;
 
   StreamSubscription? _timerStreamSubscription;
 
-  Stream<int> _tick({required int ticks}) {
-    return Stream.periodic(const Duration(seconds: 1), (x) => ticks - x - 1)
-        .take(ticks);
-  }
+  void generateQuestion() async {
+    emit(state);
 
-  void fetchData() async {
-    emit(state.copyWith(fetchDataStatus: FetchDataStatus.loading));
-
-    try {
-      // await _triviaRepository.fetchData();
-
-      await Future.delayed(const Duration(seconds: 1));
-
-      emit(state.copyWith(
-          message: 'Fetch data completed',
-          fetchDataStatus: FetchDataStatus.success,
-          timer: _duration));
-    } on FetchDataException catch (e) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure,
-          message: e.message,
-          fetchDataStatus: FetchDataStatus.failed));
-    } on TriviaProviderException catch (e) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure,
-          message: e.message,
-          fetchDataStatus: FetchDataStatus.failed));
-    } on Exception catch (_) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure,
-          message: 'Something went wrong',
-          fetchDataStatus: FetchDataStatus.failed));
-    }
+    await _triviaRepository.generateQuestion();
   }
 
   void getQuestion() async {
-    await Future.delayed(const Duration(seconds: 1));
-    emit(state.copyWith(
-      status: TriviaStateStatus.loading,
-      message: 'Loading question',
-      fetchDataStatus: FetchDataStatus.completed,
-    ));
+    emit(state);
+
+    await Future.delayed(const Duration(seconds: 2));
 
     try {
-      await _triviaRepository.generateQuestion();
       final question = await _triviaRepository.getQuestion();
 
       emit(state.copyWith(
-        status: TriviaStateStatus.success,
-        message: 'Question loaded',
         question: question,
-        sessionStatus: SessionStatus.start,
       ));
     } on TriviaProviderException catch (e) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure, message: e.message));
+      emit(state.copyWith());
     } on TriviaRepositoryException catch (e) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure, message: e.message));
+      emit(state.copyWith());
     } on Exception catch (_) {
-      emit(state.copyWith(
-          status: TriviaStateStatus.failure, message: 'Something went wrong'));
+      emit(state.copyWith());
     }
   }
 
@@ -90,7 +51,7 @@ class TriviaCubit extends Cubit<TriviaState> {
   void validateOption() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    emit(state.copyWith(sessionStatus: SessionStatus.show));
+    emit(state.copyWith());
 
     resetQuestion();
   }
@@ -98,29 +59,24 @@ class TriviaCubit extends Cubit<TriviaState> {
   void resetQuestion() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    emit(state.reset());
+    emit(state);
   }
 
   void startTimer() {
     closeTimer();
 
-    _timerStreamSubscription = _tick(ticks: _duration).listen((event) async {
+    _timerStreamSubscription =
+        _tickerData.tick(ticks: _duration).listen((event) async {
       if (event >= 0) {
-        emit(state.copyWith(
-            timer: event,
-            sessionStatus: SessionStatus.ongoing,
-            message: 'Playing'));
+        emit(state.copyWith(timer: event));
 
         if (event == 0) {
           await Future.delayed(const Duration(seconds: 1));
 
-          emit(state.copyWith(
-            sessionStatus: SessionStatus.checking,
-            message: 'Checking answer',
-          ));
+          emit(state.copyWith());
         }
       }
-    });
+    }, onDone: () => closeTimer());
   }
 
   void closeTimer() {
@@ -131,15 +87,15 @@ class TriviaCubit extends Cubit<TriviaState> {
   void onChange(Change<TriviaState> change) {
     super.onChange(change);
 
-    if (change.nextState.isReadyStartTrivia) {
+    if (change.nextState.isTriviaResetting) {
       getQuestion();
     }
 
-    if (change.nextState.isTimerReady) {
+    if (change.nextState.isTriviaReady) {
       startTimer();
     }
 
-    if (change.nextState.isCheckingOption) {
+    if (change.nextState.isTriviaCheckingPlayerOption) {
       validateOption();
     }
   }

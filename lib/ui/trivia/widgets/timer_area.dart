@@ -19,12 +19,13 @@ class TimerArea extends StatelessWidget {
                 String? playerOpt = state.playerOption;
                 String? correctOpt = state.correctOption;
 
-                if (state.isLoadingQuestion || state.isCheckingOption) {
+                if (state.isLoadingQuestion ||
+                    state.isTriviaCheckingPlayerOption) {
                   return const TimerLoading();
-                } else if (state.isTimerOngoing) {
+                } else if (state.isTriviaOngoing) {
                   return TimerTicking(
                       seconds: state.timer != null ? state.timer! : 0);
-                } else if (state.isShowResult) {
+                } else if (state.isTriviaShowingResult) {
                   if (playerOpt == null) {
                     return const NoAnswerSubmitted();
                   }
