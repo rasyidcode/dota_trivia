@@ -71,24 +71,6 @@ class TriviaProvider {
         .first;
   }
 
-  /// Insert a new question
-  Future<int> insertQuestion(QuestionItem q) async {
-    try {
-      int? id = await (await _triviaDatabase.db)?.rawInsert(
-          'INSERT INTO questions(question, image_url, template_id) VALUES(?, ?, ?)',
-          [q.question, q.imageUrl, q.templateId]);
-
-      if (id == null) {
-        throw TriviaProviderException('ID returns null');
-      }
-
-      return id;
-    } on DatabaseException catch (e) {
-      throw TriviaProviderException(
-          'Error: ${e.getResultCode()}, ${e.toString()}');
-    }
-  }
-
   /// Get a question
   Future<QuestionItem> getLastQuestion() async {
     final question = await (await _triviaDatabase.db)
@@ -102,26 +84,15 @@ class TriviaProvider {
       throw TriviaProviderException('Question returns empty');
     }
 
-    return (question.map((q) => QuestionItem.fromJson(q)).toList()).first;
-  }
-
-  /// Insert options
-  Future<void> insertOptions(List<OptionItem> opts, int qid) async {
-    Batch? batch = (await _triviaDatabase.db)?.batch();
-    for (var opt in opts) {
-      int isCorrect;
-      if (opt.isCorrect != null) {
-        isCorrect = opt.isCorrect! ? 1 : 0;
-      } else {
-        isCorrect = 0;
-      }
-
-      batch?.rawInsert(
-          'INSERT INTO options(question_id, label, content, is_correct) VALUES(?, ?, ?, ?)',
-          [qid, opt.label, opt.content, isCorrect]);
-    }
-
-    await batch?.commit(noResult: true);
+    return (question
+            .map((q) => QuestionItem.fromJson({
+                  'id': q['id'],
+                  'question': q['question'],
+                  'image_url': q['image_url'],
+                  'template_id': q['template_id'],
+                }))
+            .toList())
+        .first;
   }
 
   /// Get Options by [qid] or Question Id
@@ -147,6 +118,43 @@ class TriviaProvider {
               'icon_url': o['icon_url'],
             }))
         .toList());
+  }
+
+  /// Insert a new question
+  Future<int> insertQuestion(QuestionItem q) async {
+    try {
+      int? id = await (await _triviaDatabase.db)?.rawInsert(
+          'INSERT INTO questions(question, content_url, template_id) VALUES(?, ?, ?)',
+          [q.question, q.contentUrl, q.templateId]);
+
+      if (id == null) {
+        throw TriviaProviderException('ID returns null');
+      }
+
+      return id;
+    } on DatabaseException catch (e) {
+      throw TriviaProviderException(
+          'Error: ${e.getResultCode()}, ${e.toString()}');
+    }
+  }
+
+  /// Insert options
+  Future<void> insertOptions(List<OptionItem> opts, int qid) async {
+    Batch? batch = (await _triviaDatabase.db)?.batch();
+    for (var opt in opts) {
+      int isCorrect;
+      if (opt.isCorrect != null) {
+        isCorrect = opt.isCorrect! ? 1 : 0;
+      } else {
+        isCorrect = 0;
+      }
+
+      batch?.rawInsert(
+          'INSERT INTO options(question_id, label, content, is_correct) VALUES(?, ?, ?, ?)',
+          [qid, opt.label, opt.content, isCorrect]);
+    }
+
+    await batch?.commit(noResult: true);
   }
 
   ///

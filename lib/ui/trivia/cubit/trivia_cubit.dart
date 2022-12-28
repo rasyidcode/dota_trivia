@@ -8,7 +8,10 @@ import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 
 class TriviaCubit extends Cubit<TriviaState> {
   TriviaCubit(this._triviaRepository, this._tickerData)
-      : super(const TriviaState());
+      : super(const TriviaState()) {
+    emit(
+        state.copyWith(generateQuestionStatus: GenerateQuestionStatus.loading));
+  }
 
   final TriviaRepository _triviaRepository;
   final TickerData _tickerData;
@@ -17,28 +20,49 @@ class TriviaCubit extends Cubit<TriviaState> {
   StreamSubscription? _timerStreamSubscription;
 
   void generateQuestion() async {
-    emit(state);
+    try {
+      await _triviaRepository.generateQuestion();
 
-    await _triviaRepository.generateQuestion();
+      emit(state.copyWith(
+        generateQuestionStatus: GenerateQuestionStatus.success,
+      ));
+    } on TriviaProviderException catch (e) {
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: e.message));
+    } on TriviaRepositoryException catch (e) {
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: e.message));
+    } on Exception catch (_) {
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: 'Something went worng'));
+    }
   }
 
   void getQuestion() async {
-    emit(state);
-
-    await Future.delayed(const Duration(seconds: 2));
+    emit(state.copyWith(getQuestionStatus: GetQuestionStatus.loading));
 
     try {
       final question = await _triviaRepository.getQuestion();
 
       emit(state.copyWith(
+        getQuestionStatus: GetQuestionStatus.success,
         question: question,
       ));
     } on TriviaProviderException catch (e) {
-      emit(state.copyWith());
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: e.message));
     } on TriviaRepositoryException catch (e) {
-      emit(state.copyWith());
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: e.message));
     } on Exception catch (_) {
-      emit(state.copyWith());
+      emit(state.copyWith(
+          generateQuestionStatus: GenerateQuestionStatus.error,
+          error: 'Something went wrong'));
     }
   }
 
@@ -87,7 +111,14 @@ class TriviaCubit extends Cubit<TriviaState> {
   void onChange(Change<TriviaState> change) {
     super.onChange(change);
 
-    if (change.nextState.isTriviaResetting) {
+    if ((change.currentState.isGenerateQuestionInitial &&
+            change.nextState.isGenerateQuestionLoading) ||
+        change.nextState.isTriviaShowingResult) {
+      generateQuestion();
+    }
+
+    if (change.nextState.isGenerateQuestionSuccess ||
+        change.nextState.isTriviaResetting) {
       getQuestion();
     }
 

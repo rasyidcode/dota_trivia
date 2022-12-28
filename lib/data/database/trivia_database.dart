@@ -5,7 +5,7 @@ class TriviaDatabase {
   TriviaDatabase(String path) {
     db = openDatabase(
       join(path, 'dota_trivia.db'),
-      version: 12,
+      version: 13,
       onCreate: ((db, version) async {
         // templates data
         await _createTemplatesTable(db);
@@ -37,6 +37,10 @@ class TriviaDatabase {
 
         if (newVersion == 12) {
           await _createAbilitiesTable(db);
+        }
+
+        if (newVersion == 13) {
+          await _createQuestionsTable(db);
         }
       },
     );
@@ -185,7 +189,7 @@ class TriviaDatabase {
       CREATE TABLE IF NOT EXISTS questions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         question TEXT NULL,
-        image_url TEXT NULL,
+        content_url TEXT NULL,
         template_id INTEGER NULL
       )
     ''');

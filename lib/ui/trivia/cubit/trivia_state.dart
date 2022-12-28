@@ -13,6 +13,7 @@ class TriviaState extends Equatable {
     this.getQuestionStatus,
     this.triviaSessionStatus,
     this.question,
+    this.error,
     this.timer,
     this.playerOption,
     this.points,
@@ -23,6 +24,7 @@ class TriviaState extends Equatable {
   final TriviaSessionStatus? triviaSessionStatus;
 
   final QuestionItem? question;
+  final String? error;
   final int? timer;
   final String? playerOption;
   final int? points;
@@ -31,6 +33,9 @@ class TriviaState extends Equatable {
       generateQuestionStatus == GenerateQuestionStatus.loading ||
       getQuestionStatus == GetQuestionStatus.loading;
 
+  bool get isGenerateQuestionInitial => generateQuestionStatus == null;
+  bool get isGenerateQuestionLoading =>
+      generateQuestionStatus == GenerateQuestionStatus.loading;
   bool get isGenerateQuestionError =>
       generateQuestionStatus == GenerateQuestionStatus.error;
   bool get isGenerateQuestionSuccess =>
@@ -62,6 +67,7 @@ class TriviaState extends Equatable {
         getQuestionStatus,
         triviaSessionStatus,
         question,
+        error,
         timer,
         playerOption,
       ];
@@ -71,6 +77,7 @@ class TriviaState extends Equatable {
     GetQuestionStatus? getQuestionStatus,
     TriviaSessionStatus? triviaSessionStatus,
     QuestionItem? question,
+    String? error,
     int? timer,
     String? playerOption,
   }) {
@@ -80,6 +87,7 @@ class TriviaState extends Equatable {
       getQuestionStatus: getQuestionStatus ?? this.getQuestionStatus,
       triviaSessionStatus: triviaSessionStatus ?? this.triviaSessionStatus,
       question: question ?? this.question,
+      error: error ?? this.error,
       timer: timer ?? this.timer,
       playerOption: playerOption ?? this.playerOption,
     );

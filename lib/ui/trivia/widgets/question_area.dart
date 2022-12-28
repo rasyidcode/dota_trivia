@@ -30,7 +30,7 @@ class QuestionArea extends StatelessWidget {
             ),
             const SizedBox(height: 8.0),
             BlocSelector<TriviaCubit, TriviaState, String?>(
-              selector: (state) => state.question?.imageUrl,
+              selector: (state) => state.question?.contentUrl,
               builder: (context, imageUrl) => imageUrl != null
                   ? Image.network(
                       imageUrl,

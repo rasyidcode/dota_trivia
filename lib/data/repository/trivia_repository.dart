@@ -1,6 +1,8 @@
+import 'package:dota_trivia/constants/apis.dart';
 import 'package:dota_trivia/constants/templates.dart';
 import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
+import 'package:dota_trivia/data/model/template_item.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
 
 class TriviaRepository {
@@ -18,8 +20,12 @@ class TriviaRepository {
     }
 
     final options = await _triviaProvider.getOptions(question.id!);
+    TemplateItem? template;
+    if (question.templateId != null) {
+      template = await _triviaProvider.getTemplateById(question.templateId!);
+    }
 
-    return question.copyWith(options: options);
+    return question.copyWith(options: options, templateItem: template);
   }
 
   /// Generate a question based on template & save it locally to database
@@ -41,7 +47,7 @@ class TriviaRepository {
 
         question = QuestionItem.fromJson({
           'question': template.question,
-          // 'image_url': '${Apis.steamAssetURL}/${correctHero.imageUrl}',
+          'content_url': '${Apis.steamAssetURL}/${correctHero.img}',
           'template_id': template.id,
         });
         options = (optHeroes..shuffle())

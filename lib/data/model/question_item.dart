@@ -9,7 +9,7 @@ class QuestionItem {
   QuestionItem({
     this.id,
     this.question,
-    this.imageUrl,
+    this.contentUrl,
     this.templateId,
     this.options,
     this.templateItem,
@@ -17,8 +17,8 @@ class QuestionItem {
 
   final int? id;
   final String? question;
-  @JsonKey(name: 'image_url')
-  final String? imageUrl;
+  @JsonKey(name: 'content_url')
+  final String? contentUrl;
   @JsonKey(name: 'template_id')
   final int? templateId;
   final List<OptionItem>? options;
@@ -27,7 +27,7 @@ class QuestionItem {
   QuestionItem copyWith({
     int? id,
     String? question,
-    String? imageUrl,
+    String? contentUrl,
     int? templateId,
     List<OptionItem>? options,
     TemplateItem? templateItem,
@@ -35,7 +35,7 @@ class QuestionItem {
     return QuestionItem(
       id: id ?? this.id,
       question: question ?? this.question,
-      imageUrl: imageUrl ?? this.imageUrl,
+      contentUrl: contentUrl ?? this.contentUrl,
       templateId: templateId ?? this.templateId,
       options: options ?? this.options,
       templateItem: templateItem ?? this.templateItem,
