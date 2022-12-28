@@ -30,6 +30,8 @@ class DataRepository {
       );
     }
 
+    await Future.delayed(const Duration(seconds: 2));
+
     return 'Templates data loaded';
   }
 
@@ -46,6 +48,8 @@ class DataRepository {
       await _dataProvider.insertHeroes(heroes, abilities);
     }
 
+    await Future.delayed(const Duration(seconds: 4));
+
     return 'Heroes data loaded';
   }
 
@@ -61,6 +65,8 @@ class DataRepository {
       await _dataProvider.insertItems(items);
     }
 
+    await Future.delayed(const Duration(seconds: 6));
+
     return 'Items data loaded';
   }
 
@@ -75,6 +81,8 @@ class DataRepository {
 
       await _dataProvider.insertAbilities(abilities);
     }
+
+    await Future.delayed(const Duration(seconds: 8));
 
     return 'Abilities data loaded';
   }

@@ -18,12 +18,10 @@ class SplashCubit extends Cubit<SplashState> {
         fetchDataState: FetchDataState.loading, message: 'Fetching data...'));
 
     try {
-      _fetchDataStreamSubs =
-          _dataRepository.fetchDataStatusStream.listen((msg) {
-        emit(state.copyWith(message: msg));
-      }, onDone: () {
-        emit(state.copyWith(fetchDataState: FetchDataState.success));
-      });
+      _fetchDataStreamSubs = _dataRepository.fetchDataStatusStream.listen(
+          (msg) => emit(state.copyWith(message: msg)),
+          onDone: () =>
+              emit(state.copyWith(fetchDataState: FetchDataState.success)));
     } on DataProviderException catch (e) {
       emit(state.copyWith(
           fetchDataState: FetchDataState.error, message: e.message));
