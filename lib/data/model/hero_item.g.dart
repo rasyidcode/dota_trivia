@@ -11,7 +11,8 @@ HeroItem _$HeroItemFromJson(Map<String, dynamic> json) => HeroItem(
       heroId: json['hero_id'] as int?,
       name: json['name'] as String?,
       localizedName: json['localized_name'] as String?,
-      primaryAttr: json['primary_attr'] as String?,
+      primaryAttr:
+          $enumDecodeNullable(_$PrimaryAttrEnumMap, json['primary_attr']),
       attackType: json['attack_type'] as String?,
       roles:
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -52,7 +53,7 @@ Map<String, dynamic> _$HeroItemToJson(HeroItem instance) => <String, dynamic>{
       'hero_id': instance.heroId,
       'name': instance.name,
       'localized_name': instance.localizedName,
-      'primary_attr': instance.primaryAttr,
+      'primary_attr': _$PrimaryAttrEnumMap[instance.primaryAttr],
       'attack_type': instance.attackType,
       'roles': instance.roles,
       'img': instance.img,
@@ -84,3 +85,9 @@ Map<String, dynamic> _$HeroItemToJson(HeroItem instance) => <String, dynamic>{
       'night_vision': instance.nightVision,
       'abilities': instance.abilities,
     };
+
+const _$PrimaryAttrEnumMap = {
+  PrimaryAttr.strength: 'str',
+  PrimaryAttr.agility: 'agi',
+  PrimaryAttr.intelligence: 'int',
+};

@@ -34,28 +34,90 @@ class TriviaRepository {
     final QuestionItem question;
     final List<OptionItem> options;
 
-    final template = await _triviaProvider
-        .getTemplateById(Templates.whatIsTheNameOfThisHero);
+    final template =
+        await _triviaProvider.getTemplateById(Templates.whatIsTheBaseArmorFor);
 
     switch (template.id) {
       case Templates.whatIsTheNameOfThisHero:
-        final heroes = (await _triviaProvider.getHeroes()
-          ..shuffle());
-        final optHeroes = heroes.take(4).toList();
-        final correctHero = (optHeroes..shuffle()).first;
+        final heroes = await _triviaProvider.getRandomHeroes(4);
+        final correctHero = (heroes..shuffle()).first;
         final labels = ['a', 'b', 'c', 'd'];
 
         question = QuestionItem.fromJson({
           'question': template.question,
-          'content_url': '${Apis.steamAssetURL}/${correctHero.img}',
+          'content_url': correctHero.img,
           'template_id': template.id,
         });
-        options = (optHeroes..shuffle())
+        options = (heroes..shuffle())
             .map(
               (optHero) => OptionItem.fromJson({
-                'label': labels[optHeroes.indexOf(optHero)],
-                'content': optHero.name,
+                'label': labels[heroes.indexOf(optHero)],
+                'content': optHero.localizedName,
                 'is_correct': correctHero.id == optHero.id
+              }),
+            )
+            .toList();
+        break;
+      case Templates.whatIsTheBaseMovementSpeedFor:
+        final heroes = await _triviaProvider.getRandomHeroes(4);
+        final correctOpt = (heroes..shuffle()).first;
+        final labels = ['a', 'b', 'c', 'd'];
+
+        question = QuestionItem.fromJson({
+          'question': template.question?.replaceFirst(
+              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
+          'content_url': correctOpt.img,
+          'template_id': template.id,
+        });
+        options = (heroes..shuffle())
+            .map(
+              (optHero) => OptionItem.fromJson({
+                'label': labels[heroes.indexOf(optHero)],
+                'content': optHero.moveSpeed.toString(),
+                'is_correct': correctOpt.id == optHero.id
+              }),
+            )
+            .toList();
+        break;
+      case Templates.whatIsTheBaseAttackFor:
+        final heroes = await _triviaProvider.getRandomHeroes(4);
+        final correctOpt = (heroes..shuffle()).first;
+        final labels = ['a', 'b', 'c', 'd'];
+
+        question = QuestionItem.fromJson({
+          'question': template.question?.replaceFirst(
+              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
+          'content_url': correctOpt.img,
+          'template_id': template.id,
+        });
+        options = (heroes..shuffle())
+            .map(
+              (optHero) => OptionItem.fromJson({
+                'label': labels[heroes.indexOf(optHero)],
+                'content':
+                    '${optHero.getMinAttack()} - ${optHero.getMaxAttack()}',
+                'is_correct': correctOpt.id == optHero.id
+              }),
+            )
+            .toList();
+        break;
+      case Templates.whatIsTheBaseArmorFor:
+        final heroes = await _triviaProvider.getRandomHeroes(4);
+        final correctOpt = (heroes..shuffle()).first;
+        final labels = ['a', 'b', 'c', 'd'];
+
+        question = QuestionItem.fromJson({
+          'question': template.question?.replaceFirst(
+              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
+          'content_url': correctOpt.img,
+          'template_id': template.id,
+        });
+        options = (heroes..shuffle())
+            .map(
+              (optHero) => OptionItem.fromJson({
+                'label': labels[heroes.indexOf(optHero)],
+                'content': optHero.baseArmor.toString(),
+                'is_correct': correctOpt.id == optHero.id
               }),
             )
             .toList();

@@ -10,9 +10,9 @@ class TriviaProvider {
 
   final TriviaDatabase _triviaDatabase;
 
-  Future<List<HeroItem>> getHeroes() async {
-    final heroes = await (await _triviaDatabase.db)
-        ?.rawQuery('SELECT * FROM heroes ORDER BY id ASC');
+  Future<List<HeroItem>> getRandomHeroes(int count) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery(
+        'SELECT * FROM heroes ORDER BY RANDOM() ASC LIMIT ?', [count]);
 
     if (heroes == null) {
       throw TriviaProviderException('Heroes returns null');
@@ -22,12 +22,50 @@ class TriviaProvider {
       throw TriviaProviderException('Heroes returns empty');
     }
 
-    return heroes.map((h) => HeroItem.fromJson(h)).toList();
+    return heroes
+        .map((h) => HeroItem.fromJson({
+              'id': h['id'],
+              'hero_id': h['hero_id'],
+              'name': h['name'],
+              'localized_name': h['localized_name'],
+              'primary_attr': h['primary_attr'],
+              'attack_type': h['attack_type'],
+              'roles': h['roles'].toString().split(','),
+              'img': h['img'],
+              'icon': h['icon'],
+              'base_health': h['base_health'],
+              'base_health_regen': h['base_health_regen'],
+              'base_mana': h['base_mana'],
+              'base_mana_regen': h['base_mana_regen'],
+              'base_armor': h['base_armor'],
+              'base_mr': h['base_mr'],
+              'base_attack_min': h['base_attack_min'],
+              'base_attack_max': h['base_attack_max'],
+              'base_str': h['base_str'],
+              'base_agi': h['base_agi'],
+              'base_int': h['base_int'],
+              'str_gain': h['str_gain'],
+              'agi_gain': h['agi_gain'],
+              'int_gain': h['int_gain'],
+              'attack_range': h['attack_range'],
+              'projectile_speed': h['projectile_speed'],
+              'attack_rate': h['attack_rate'],
+              'base_attack_time': h['base_attack_time'],
+              'attack_point': h['attack_point'],
+              'move_speed': h['move_speed'],
+              'turn_rate': h['turn_rate'],
+              'cm_enabled': h['cm_enabled'],
+              'legs': h['legs'],
+              'day_vision': h['day_vision'],
+              'night_vision': h['night_vision'],
+              'abilities': h['abilities'].toString().split(',')
+            }))
+        .toList();
   }
 
   Future<TemplateItem> getTemplateById(int id) async {
     final templates = await (await _triviaDatabase.db)
-        ?.rawQuery('SELECT * FROM templates WHERE id = ?', [id]);
+        ?.rawQuery('SELECT * FROM templates WHERE template_id = ?', [id]);
 
     if (templates == null) {
       throw TriviaProviderException('Template returns null');
@@ -37,7 +75,17 @@ class TriviaProvider {
       throw TriviaProviderException('Template returns empty');
     }
 
-    return templates.map((t) => TemplateItem.fromJson(t)).toList().first;
+    return templates
+        .map((t) => TemplateItem.fromJson({
+              'id': t['id'],
+              'template_id': t['template_id'],
+              'question': t['question'],
+              'content_type': t['content_type'],
+              'option_type': t['option_type'],
+              'source_data': t['source_data'].toString().split(',')
+            }))
+        .toList()
+        .first;
   }
 
   Future<List<TemplateItem>> getTemplates() async {
@@ -88,7 +136,7 @@ class TriviaProvider {
             .map((q) => QuestionItem.fromJson({
                   'id': q['id'],
                   'question': q['question'],
-                  'image_url': q['image_url'],
+                  'content_url': q['content_url'],
                   'template_id': q['template_id'],
                 }))
             .toList())

@@ -5,7 +5,7 @@ class TriviaDatabase {
   TriviaDatabase(String path) {
     db = openDatabase(
       join(path, 'dota_trivia.db'),
-      version: 13,
+      version: 16,
       onCreate: ((db, version) async {
         // templates data
         await _createTemplatesTable(db);
@@ -39,8 +39,11 @@ class TriviaDatabase {
           await _createAbilitiesTable(db);
         }
 
-        if (newVersion == 13) {
+        if (newVersion == 16) {
+          await db.execute('DROP TABLE questions');
+          await db.execute('DROP TABLE options');
           await _createQuestionsTable(db);
+          await _createOptionsTable(db);
         }
       },
     );

@@ -7,12 +7,12 @@ part 'template_item.g.dart';
 @JsonSerializable()
 class TemplateItem {
   TemplateItem({
-    required this.id,
-    required this.templateId,
-    required this.question,
-    required this.contentType,
-    required this.optionType,
-    required this.sourceData,
+    this.id,
+    this.templateId,
+    this.question,
+    this.contentType,
+    this.optionType,
+    this.sourceData,
   });
 
   final int? id;

@@ -1,3 +1,4 @@
+import 'package:dota_trivia/constants/apis.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:flutter/material.dart';
@@ -31,9 +32,9 @@ class QuestionArea extends StatelessWidget {
             const SizedBox(height: 8.0),
             BlocSelector<TriviaCubit, TriviaState, String?>(
               selector: (state) => state.question?.contentUrl,
-              builder: (context, imageUrl) => imageUrl != null
+              builder: (context, contentUrl) => contentUrl != null
                   ? Image.network(
-                      imageUrl,
+                      '${Apis.steamAssetURL}$contentUrl',
                       height: 80.0,
                     )
                   : Container(

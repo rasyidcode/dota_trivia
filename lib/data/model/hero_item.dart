@@ -1,3 +1,5 @@
+import 'package:dota_trivia/constants/hero_stats.dart';
+import 'package:dota_trivia/data/model/common/primary_attr.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'hero_item.g.dart';
@@ -49,7 +51,7 @@ class HeroItem {
   @JsonKey(name: 'localized_name')
   final String? localizedName;
   @JsonKey(name: 'primary_attr')
-  final String? primaryAttr;
+  final PrimaryAttr? primaryAttr;
   @JsonKey(name: 'attack_type')
   final String? attackType;
   final List<String>? roles;
@@ -110,4 +112,32 @@ class HeroItem {
       _$HeroItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$HeroItemToJson(this);
+
+  int getMinAttack() {
+    int? primaryAttrValue;
+
+    if (primaryAttr == PrimaryAttr.strength) {
+      primaryAttrValue = baseStr;
+    } else if (primaryAttr == PrimaryAttr.agility) {
+      primaryAttrValue = baseAgi;
+    } else if (primaryAttr == PrimaryAttr.intelligence) {
+      primaryAttrValue = baseAgi;
+    }
+    return (baseAttackMin ?? 0) +
+        (HeroStats.attackDamage * (primaryAttrValue ?? 0));
+  }
+
+  int getMaxAttack() {
+    int? primaryAttrValue;
+
+    if (primaryAttr == PrimaryAttr.strength) {
+      primaryAttrValue = baseStr;
+    } else if (primaryAttr == PrimaryAttr.agility) {
+      primaryAttrValue = baseAgi;
+    } else if (primaryAttr == PrimaryAttr.intelligence) {
+      primaryAttrValue = baseAgi;
+    }
+    return (baseAttackMax ?? 0) +
+        (HeroStats.attackDamage * (primaryAttrValue ?? 0));
+  }
 }

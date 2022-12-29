@@ -1,17 +1,19 @@
 import 'package:dota_trivia/data/model/question_item.dart';
 import 'package:equatable/equatable.dart';
 
-enum GenerateQuestionStatus { loading, error, success }
-
-enum GetQuestionStatus { loading, error, success }
-
-enum TriviaSessionStatus { ongoing, checking, showing, resetting }
+enum TriviaStatus {
+  initial,
+  loading,
+  error,
+  success,
+  playing,
+  checking,
+  showing
+}
 
 class TriviaState extends Equatable {
   const TriviaState({
-    this.generateQuestionStatus,
-    this.getQuestionStatus,
-    this.triviaSessionStatus,
+    required this.status,
     this.question,
     this.error,
     this.timer,
@@ -19,9 +21,7 @@ class TriviaState extends Equatable {
     this.points,
   });
 
-  final GenerateQuestionStatus? generateQuestionStatus;
-  final GetQuestionStatus? getQuestionStatus;
-  final TriviaSessionStatus? triviaSessionStatus;
+  final TriviaStatus status;
 
   final QuestionItem? question;
   final String? error;
@@ -29,43 +29,19 @@ class TriviaState extends Equatable {
   final String? playerOption;
   final int? points;
 
-  bool get isLoadingQuestion =>
-      generateQuestionStatus == GenerateQuestionStatus.loading ||
-      getQuestionStatus == GetQuestionStatus.loading;
-
-  bool get isGenerateQuestionInitial => generateQuestionStatus == null;
-  bool get isGenerateQuestionLoading =>
-      generateQuestionStatus == GenerateQuestionStatus.loading;
-  bool get isGenerateQuestionError =>
-      generateQuestionStatus == GenerateQuestionStatus.error;
-  bool get isGenerateQuestionSuccess =>
-      generateQuestionStatus == GenerateQuestionStatus.success;
-
-  bool get isGetQuestionError =>
-      generateQuestionStatus == GetQuestionStatus.error;
-  bool get isGetQuestionSuccess =>
-      generateQuestionStatus == GetQuestionStatus.success;
-
-  bool get isTriviaReady =>
-      generateQuestionStatus == GenerateQuestionStatus.success &&
-      getQuestionStatus == GetQuestionStatus.success;
-  bool get isTriviaOngoing =>
-      triviaSessionStatus == TriviaSessionStatus.ongoing;
-  bool get isTriviaCheckingPlayerOption =>
-      triviaSessionStatus == TriviaSessionStatus.checking;
-  bool get isTriviaShowingResult =>
-      triviaSessionStatus == TriviaSessionStatus.showing;
-  bool get isTriviaResetting =>
-      triviaSessionStatus == TriviaSessionStatus.resetting;
-
   String? get correctOption =>
       question?.options?.firstWhere((opt) => opt.isCorrect == true).label;
 
+  bool get isInitial => status == TriviaStatus.initial;
+  bool get isLoading => status == TriviaStatus.loading;
+  bool get isReady => status == TriviaStatus.success && question != null;
+  bool get isPlaying => status == TriviaStatus.playing;
+  bool get isChecking => status == TriviaStatus.checking;
+  bool get isShowing => status == TriviaStatus.showing;
+
   @override
   List<Object?> get props => [
-        generateQuestionStatus,
-        getQuestionStatus,
-        triviaSessionStatus,
+        status,
         question,
         error,
         timer,
@@ -73,23 +49,23 @@ class TriviaState extends Equatable {
       ];
 
   TriviaState copyWith({
-    GenerateQuestionStatus? generateQuestionStatus,
-    GetQuestionStatus? getQuestionStatus,
-    TriviaSessionStatus? triviaSessionStatus,
+    TriviaStatus? status,
     QuestionItem? question,
     String? error,
     int? timer,
     String? playerOption,
   }) {
     return TriviaState(
-      generateQuestionStatus:
-          generateQuestionStatus ?? this.generateQuestionStatus,
-      getQuestionStatus: getQuestionStatus ?? this.getQuestionStatus,
-      triviaSessionStatus: triviaSessionStatus ?? this.triviaSessionStatus,
+      status: status ?? this.status,
       question: question ?? this.question,
       error: error ?? this.error,
       timer: timer ?? this.timer,
       playerOption: playerOption ?? this.playerOption,
     );
+  }
+
+  TriviaState reset() {
+    return TriviaState(
+        status: TriviaStatus.initial, playerOption: null, question: question);
   }
 }

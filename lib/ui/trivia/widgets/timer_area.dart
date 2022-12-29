@@ -16,37 +16,34 @@ class TimerArea extends StatelessWidget {
             const Spacer(),
             BlocBuilder<TriviaCubit, TriviaState>(
               builder: (context, state) {
-                String? playerOpt = state.playerOption;
-                String? correctOpt = state.correctOption;
+                if (state.isInitial || state.isLoading || state.isChecking) {
+                  return const CircularProgressIndicator(
+                    color: Colors.white,
+                  );
+                }
 
-                if (state.isLoadingQuestion ||
-                    state.isTriviaCheckingPlayerOption) {
-                  return const TimerLoading();
-                } else if (state.isTriviaOngoing) {
+                if (state.isPlaying) {
                   return TimerTicking(
                       seconds: state.timer != null ? state.timer! : 0);
-                } else if (state.isTriviaShowingResult) {
-                  if (playerOpt == null) {
-                    return const NoAnswerSubmitted();
-                  }
-                  String result = 'INCORRECT';
-                  bool isCorrect = false;
+                }
 
-                  if (correctOpt != null) {
-                    isCorrect = playerOpt == correctOpt;
-                    result = isCorrect ? 'CORRECT' : 'INCORRECT';
+                if (state.isShowing) {
+                  if (state.playerOption == null) {
+                    return const NoAnswerSubmitted();
                   }
 
                   return Column(
                     children: [
                       Text(
-                        result,
+                        state.playerOption == state.correctOption
+                            ? 'CORRECT'
+                            : 'INCORRECT',
                         style:
                             Theme.of(context).textTheme.displayMedium?.copyWith(
                                   color: Colors.deepOrangeAccent,
                                 ),
                       ),
-                      isCorrect
+                      state.playerOption == state.correctOption
                           ? Text(
                               '+100 TRIVIA POINTS',
                               style: Theme.of(context)
@@ -59,6 +56,46 @@ class TimerArea extends StatelessWidget {
                   );
                 }
 
+                // if (state.isLoadingQuestion ||
+                //     state.isTriviaCheckingPlayerOption) {
+                //   return const TimerLoading();
+                // } else if (state.isTriviaOngoing) {
+                //   return TimerTicking(
+                //       seconds: state.timer != null ? state.timer! : 0);
+                // } else if (state.isTriviaShowingResult) {
+                //   if (playerOpt == null) {
+                //     return const NoAnswerSubmitted();
+                //   }
+                //   String result = 'INCORRECT';
+                //   bool isCorrect = false;
+
+                //   if (correctOpt != null) {
+                //     isCorrect = playerOpt == correctOpt;
+                //     result = isCorrect ? 'CORRECT' : 'INCORRECT';
+                //   }
+
+                //   return Column(
+                //     children: [
+                //       Text(
+                //         result,
+                //         style:
+                //             Theme.of(context).textTheme.displayMedium?.copyWith(
+                //                   color: Colors.deepOrangeAccent,
+                //                 ),
+                //       ),
+                //       isCorrect
+                //           ? Text(
+                //               '+100 TRIVIA POINTS',
+                //               style: Theme.of(context)
+                //                   .textTheme
+                //                   .headlineSmall
+                //                   ?.copyWith(color: Colors.deepOrangeAccent),
+                //             )
+                //           : Container(),
+                //     ],
+                //   );
+                // }
+
                 return Container();
               },
             ),
@@ -66,17 +103,6 @@ class TimerArea extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class TimerLoading extends StatelessWidget {
-  const TimerLoading({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const CircularProgressIndicator(
-      color: Colors.white,
     );
   }
 }
