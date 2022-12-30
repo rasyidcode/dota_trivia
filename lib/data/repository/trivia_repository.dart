@@ -33,8 +33,14 @@ class TriviaRepository {
   Future<void> generateQuestion() async {
     QuestionItem question;
 
-    TemplateItem template = await _triviaProvider
-        .getTemplateById(Templates.whatIsTheNameOfThisHero);
+    List<int> templates = [
+      Templates.whatIsTheNameOfThisHero,
+      Templates.whatIsTheBaseMovementSpeedFor,
+      Templates.whatIsTheBaseAttackFor,
+      Templates.whatIsTheBaseArmorFor
+    ];
+    TemplateItem template =
+        await _triviaProvider.getTemplateById((templates..shuffle()).first);
 
     switch (template.templateId) {
       case Templates.whatIsTheNameOfThisHero:

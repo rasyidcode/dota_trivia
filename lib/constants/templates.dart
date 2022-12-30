@@ -2,11 +2,11 @@ class Templates {
   static const int whatIsTheNameOfThisHero =
       1; // What is the name of this hero?
   static const int whatIsTheBaseMovementSpeedFor =
-      6; // What is the base movement speed for {replace}?
+      3; // What is the base movement speed for {replace}?
   static const int whatIsTheBaseAttackFor =
-      7; // What is the base attack for {replace}?
+      4; // What is the base attack for {replace}?
   static const int whatIsTheBaseArmorFor =
-      8; // What is the base armor for {replace}?
+      5; // What is the base armor for {replace}?
   static const int whatIsTheBaseHealthAndManaFor =
       9; // What is the base health and mana for {replace}?
   // Which hero has this ability?

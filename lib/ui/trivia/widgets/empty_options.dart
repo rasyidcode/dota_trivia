@@ -13,7 +13,7 @@ class EmptyOptions extends StatelessWidget {
         (i) => Container(
           width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
           height: 80.0,
-          color: Colors.white54,
+          color: Colors.white12,
         ),
       ),
     );

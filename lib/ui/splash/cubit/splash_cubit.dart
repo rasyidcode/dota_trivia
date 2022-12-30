@@ -13,7 +13,7 @@ class SplashCubit extends Cubit<SplashState> {
 
   StreamSubscription? _fetchDataStreamSubs;
 
-  void fetchTemplates() async {
+  void fetchData() async {
     emit(state.copyWith(
         fetchDataState: FetchDataState.loading, message: 'Fetching data...'));
 

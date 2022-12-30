@@ -39,7 +39,14 @@ class QuestionArea extends StatelessWidget {
                 : Container(
                     height: 80.0,
                     width: 150.0,
-                    color: Colors.white12,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.white54.withOpacity(0.3),
+                        width: 1.3,
+                      ),
+                      gradient: const LinearGradient(
+                          colors: [Colors.white12, Colors.white12]),
+                    ),
                   ),
           ),
           Align(

@@ -1,18 +1,16 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:dota_trivia/data/repository/data_repository.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
 import 'package:dota_trivia/data/ticker/ticker_data.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:flutter/foundation.dart';
 
 class TriviaCubit extends Cubit<TriviaState> {
-  TriviaCubit(this._triviaRepository, this._dataRepository, this._tickerData)
+  TriviaCubit(this._triviaRepository, this._tickerData)
       : super(const TriviaState(status: TriviaStatus.initial));
 
   final TriviaRepository _triviaRepository;
-  final DataRepository _dataRepository;
   final TickerData _tickerData;
   final int _duration = 16;
 
@@ -26,14 +24,13 @@ class TriviaCubit extends Cubit<TriviaState> {
     emit(state.copyWith(status: TriviaStatus.loading));
 
     try {
-      await _dataRepository.fetchTemplates();
       await _triviaRepository.generateQuestion();
       final question = await _triviaRepository.getQuestion();
 
-      // emit(state.copyWith(
-      //   status: TriviaStatus.success,
-      //   question: question,
-      // ));
+      emit(state.copyWith(
+        status: TriviaStatus.success,
+        question: question,
+      ));
     } on Exception catch (e, stacktrace) {
       if (kDebugMode) {
         print(stacktrace);

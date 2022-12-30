@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    _splashCubit.fetchTemplates();
+    _splashCubit.fetchData();
   }
 
   @override

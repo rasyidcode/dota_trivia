@@ -3,6 +3,7 @@ import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:dota_trivia/ui/trivia/widgets/empty_options.dart';
+import 'package:dota_trivia/ui/trivia/widgets/option_content.dart';
 import 'package:dota_trivia/ui/trivia/widgets/options/text_icon_option.dart';
 import 'package:dota_trivia/ui/trivia/widgets/options/text_only_option.dart';
 import 'package:flutter/material.dart';
@@ -107,57 +108,6 @@ class OptionsArea extends StatelessWidget {
             }
           }
 
-          // if (state.isTriviaOngoing || state.isTriviaCheckingPlayerOption) {
-          //   if (playerOpt != null &&
-          //       opt.label != null &&
-          //       opt.label == playerOpt) {
-          //     linearGradient = _selectedOptionGradient();
-          //   } else {
-          //     linearGradient = _activeOptionGradient();
-          //   }
-          // } else if (state.isTriviaShowingResult) {
-          //   if (playerOpt == null &&
-          //       correctOpt != null &&
-          //       correctOpt == opt.label) {
-          //     linearGradient = _selectedOptionGradient();
-          //   }
-
-          //   if (playerOpt != null && correctOpt != null && opt.label != null) {
-          //     if (opt.label == playerOpt) {
-          //       if (playerOpt == correctOpt) {
-          //         linearGradient = _correctOptionGradient();
-          //       } else {
-          //         linearGradient = _incorrectOptionGradient();
-          //       }
-          //     }
-          //   }
-          // }
-          // if (state.isTimerOngoing || state.isCheckingOption) {
-          //   if (playerOpt != null &&
-          //       opt.label != null &&
-          //       opt.label == playerOpt) {
-          //     linearGradient = _selectedOptionGradient();
-          //   } else {
-          //     linearGradient = _activeOptionGradient();
-          //   }
-          // } else if (state.isShowResult) {
-          //   if (playerOpt == null &&
-          //       correctOpt != null &&
-          //       correctOpt == opt.label) {
-          //     linearGradient = _selectedOptionGradient();
-          //   }
-
-          //   if (playerOpt != null && correctOpt != null && opt.label != null) {
-          //     if (opt.label == playerOpt) {
-          //       if (playerOpt == correctOpt) {
-          //         linearGradient = _correctOptionGradient();
-          //       } else {
-          //         linearGradient = _incorrectOptionGradient();
-          //       }
-          //     }
-          //   }
-          // }
-
           return GestureDetector(
             onTap: () {
               if (opt.label != null && state.isPlaying && playerOpt == null) {
@@ -183,31 +133,10 @@ class OptionsArea extends StatelessWidget {
                           color: Colors.deepOrangeAccent,
                         ),
                   ),
-                  if (state.question?.templateId ==
-                      Templates.whatIsTheNameOfThisHero)
-                    TextOnlyOption(
-                      content: opt.content,
-                    )
-                  else if (state.question?.templateId ==
-                      Templates.whatIsTheBaseMovementSpeedFor)
-                    TextIconOption(
-                      content: opt.content,
-                      type: TextIconType.moveSpeed,
-                    )
-                  else if (state.question?.templateId ==
-                      Templates.whatIsTheBaseAttackFor)
-                    TextIconOption(
-                      content: opt.content,
-                      type: TextIconType.attack,
-                    )
-                  else if (state.question?.templateId ==
-                      Templates.whatIsTheBaseArmorFor)
-                    TextIconOption(
-                      content: opt.content,
-                      type: TextIconType.armor,
-                    )
-                  else
-                    Container(),
+                  OptionContent(
+                    content: opt.content ?? '',
+                    templateId: state.question?.templateId ?? 0,
+                  ),
                   if (state.isShowing &&
                       playerOpt != null &&
                       opt.label != null &&
