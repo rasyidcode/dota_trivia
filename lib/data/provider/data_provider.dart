@@ -37,15 +37,17 @@ class DataProvider extends BaseProvider {
     for (var template in templates) {
       batch?.rawInsert('''
         INSERT INTO templates
-          (template_id, question, content_type, option_type, source_data)
+          (template_id, question, content_type, option_type, source_data, info, level)
         VALUES
-          (?, ?, ?, ?, ?)
+          (?, ?, ?, ?, ?, ?, ?)
       ''', [
         template['id'],
         template['question'],
         template['content_type'],
         template['option_type'],
-        (template['source_data'] as List).join(',')
+        (template['source_data'] as List).join(','),
+        template['info'],
+        template['level'],
       ]);
     }
 

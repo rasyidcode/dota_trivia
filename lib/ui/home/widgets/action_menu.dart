@@ -66,7 +66,21 @@ class ActionMenu extends StatelessWidget {
           ),
           style:
               ElevatedButton.styleFrom(fixedSize: const Size.fromWidth(180.0)),
-        )
+        ),
+        const SizedBox(height: 8.0),
+        ElevatedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.history),
+          label: Text(
+            'SYNC DATA',
+            style: Theme.of(context)
+                .textTheme
+                .labelLarge
+                ?.copyWith(letterSpacing: 2.0),
+          ),
+          style:
+              ElevatedButton.styleFrom(fixedSize: const Size.fromWidth(180.0)),
+        ),
       ],
     );
   }

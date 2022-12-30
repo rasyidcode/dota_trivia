@@ -14,6 +14,12 @@ class TimerArea extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                BlocProvider.of<TriviaCubit>(context).toggleTimer();
+              },
+              child: const Text('Toggle Timer'),
+            ),
             BlocBuilder<TriviaCubit, TriviaState>(
               builder: (context, state) {
                 if (state.isInitial || state.isLoading || state.isChecking) {

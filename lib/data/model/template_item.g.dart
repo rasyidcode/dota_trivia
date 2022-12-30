@@ -16,6 +16,8 @@ TemplateItem _$TemplateItemFromJson(Map<String, dynamic> json) => TemplateItem(
       sourceData: (json['source_data'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      info: json['info'] as String?,
+      level: $enumDecodeNullable(_$LevelEnumMap, json['level']),
     );
 
 Map<String, dynamic> _$TemplateItemToJson(TemplateItem instance) =>
@@ -26,6 +28,8 @@ Map<String, dynamic> _$TemplateItemToJson(TemplateItem instance) =>
       'content_type': _$ContentTypeEnumMap[instance.contentType],
       'option_type': _$OptionTypeEnumMap[instance.optionType],
       'source_data': instance.sourceData,
+      'info': instance.info,
+      'level': _$LevelEnumMap[instance.level],
     };
 
 const _$ContentTypeEnumMap = {
@@ -43,4 +47,10 @@ const _$OptionTypeEnumMap = {
   OptionType.textIcon: 'text_icon',
   OptionType.image: 'image',
   OptionType.customHealthManaBar: 'custom_health_mana_bar',
+};
+
+const _$LevelEnumMap = {
+  Level.easy: 'easy',
+  Level.medium: 'medium',
+  Level.hard: 'hard',
 };

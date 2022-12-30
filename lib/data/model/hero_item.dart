@@ -121,7 +121,7 @@ class HeroItem {
     } else if (primaryAttr == PrimaryAttr.agility) {
       primaryAttrValue = baseAgi;
     } else if (primaryAttr == PrimaryAttr.intelligence) {
-      primaryAttrValue = baseAgi;
+      primaryAttrValue = baseInt;
     }
     return (baseAttackMin ?? 0) +
         (HeroStats.attackDamage * (primaryAttrValue ?? 0));
@@ -135,9 +135,14 @@ class HeroItem {
     } else if (primaryAttr == PrimaryAttr.agility) {
       primaryAttrValue = baseAgi;
     } else if (primaryAttr == PrimaryAttr.intelligence) {
-      primaryAttrValue = baseAgi;
+      primaryAttrValue = baseInt;
     }
     return (baseAttackMax ?? 0) +
         (HeroStats.attackDamage * (primaryAttrValue ?? 0));
+  }
+
+  String getArmor() {
+    return ((baseArmor ?? 0) + (HeroStats.armor * (baseAgi ?? 0)))
+        .toStringAsFixed(1);
   }
 }

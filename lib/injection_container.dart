@@ -27,5 +27,6 @@ Future<void> initKiwi() async {
     ..registerFactory((c) => TickerData())
     ..registerFactory((c) => SplashCubit(c.resolve()))
     ..registerFactory((c) => HomeCubit(c.resolve()))
-    ..registerFactory((c) => TriviaCubit(c.resolve(), c.resolve()));
+    ..registerFactory(
+        (c) => TriviaCubit(c.resolve(), c.resolve(), c.resolve()));
 }

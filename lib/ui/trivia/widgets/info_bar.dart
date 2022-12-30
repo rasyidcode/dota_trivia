@@ -14,7 +14,7 @@ class InfoBar extends StatelessWidget {
       child: BlocSelector<TriviaCubit, TriviaState, int?>(
         selector: (state) => state.question?.id,
         builder: (context, id) => Text(
-          id != null ? '#${NumberFormat("#,##", "en_US").format(id)}' : '',
+          id != null ? '#${NumberFormat("#,###", "en_US").format(id)}' : '',
           textAlign: TextAlign.end,
           style: Theme.of(context)
               .textTheme

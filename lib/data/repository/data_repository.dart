@@ -10,14 +10,14 @@ class DataRepository {
   final DataProvider _dataProvider;
 
   Stream<String> get fetchDataStatusStream => Stream.fromFutures([
-        _fetchTemplates(),
+        fetchTemplates(),
         _fetchHeroes(),
         _fetchItems(),
         _fetchAbilities(),
       ]);
 
   /// Fetch templates data from data source and save it locally
-  Future<String> _fetchTemplates() async {
+  Future<String> fetchTemplates() async {
     final isTemplatesDataExist = await _dataProvider.isTemplatesDataExist();
 
     if (!isTemplatesDataExist) {

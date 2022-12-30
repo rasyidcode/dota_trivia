@@ -1,5 +1,6 @@
 import 'package:dota_trivia/data/model/common/content_type.dart';
 import 'package:dota_trivia/data/model/common/option_type.dart';
+import 'package:dota_trivia/data/model/level.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'template_item.g.dart';
@@ -13,6 +14,8 @@ class TemplateItem {
     this.contentType,
     this.optionType,
     this.sourceData,
+    this.info,
+    this.level,
   });
 
   final int? id;
@@ -25,6 +28,8 @@ class TemplateItem {
   final OptionType? optionType;
   @JsonKey(name: 'source_data')
   final List<String>? sourceData;
+  final String? info;
+  final Level? level;
 
   factory TemplateItem.fromJson(Map<String, dynamic> json) =>
       _$TemplateItemFromJson(json);

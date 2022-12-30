@@ -22,7 +22,6 @@ class _TriviaPageState extends State<TriviaPage> {
   @override
   void initState() {
     super.initState();
-
     _triviaCubit.getQuestion();
   }
 

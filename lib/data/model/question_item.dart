@@ -12,7 +12,7 @@ class QuestionItem {
     this.contentUrl,
     this.templateId,
     this.options,
-    this.templateItem,
+    this.template,
   });
 
   final int? id;
@@ -22,7 +22,7 @@ class QuestionItem {
   @JsonKey(name: 'template_id')
   final int? templateId;
   final List<OptionItem>? options;
-  final TemplateItem? templateItem;
+  final TemplateItem? template;
 
   QuestionItem copyWith({
     int? id,
@@ -30,7 +30,7 @@ class QuestionItem {
     String? contentUrl,
     int? templateId,
     List<OptionItem>? options,
-    TemplateItem? templateItem,
+    TemplateItem? template,
   }) {
     return QuestionItem(
       id: id ?? this.id,
@@ -38,7 +38,7 @@ class QuestionItem {
       contentUrl: contentUrl ?? this.contentUrl,
       templateId: templateId ?? this.templateId,
       options: options ?? this.options,
-      templateItem: templateItem ?? this.templateItem,
+      template: template ?? this.template,
     );
   }
 

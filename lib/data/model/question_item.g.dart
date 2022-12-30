@@ -14,9 +14,9 @@ QuestionItem _$QuestionItemFromJson(Map<String, dynamic> json) => QuestionItem(
       options: (json['options'] as List<dynamic>?)
           ?.map((e) => OptionItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      templateItem: json['templateItem'] == null
+      template: json['template'] == null
           ? null
-          : TemplateItem.fromJson(json['templateItem'] as Map<String, dynamic>),
+          : TemplateItem.fromJson(json['template'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$QuestionItemToJson(QuestionItem instance) =>
@@ -26,5 +26,5 @@ Map<String, dynamic> _$QuestionItemToJson(QuestionItem instance) =>
       'content_url': instance.contentUrl,
       'template_id': instance.templateId,
       'options': instance.options?.map((e) => e.toJson()).toList(),
-      'templateItem': instance.templateItem?.toJson(),
+      'template': instance.template?.toJson(),
     };

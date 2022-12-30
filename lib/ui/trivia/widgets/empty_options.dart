@@ -6,14 +6,16 @@ class EmptyOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        spacing: 8.0,
-        runSpacing: 8.0,
-        children: List.generate(
-            4,
-            (i) => SizedBox(
-                  width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
-                  height: 80.0,
-                  child: const Text('?'),
-                )));
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: List.generate(
+        4,
+        (i) => Container(
+          width: MediaQuery.of(context).size.width / 2 - (8 * 2 - 4),
+          height: 80.0,
+          color: Colors.white54,
+        ),
+      ),
+    );
   }
 }
