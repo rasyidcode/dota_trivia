@@ -7,10 +7,55 @@
             "option_type": "text",
             "source_data": [
                 "heroes"
-            ]
+            ],
+            "info": "All heroes has name",
+            "level": "easy"
         },
         {
             "id": 2,
+            "question": "What hero has primary attribute of {replace}?",
+            "content_type": "text_icon",
+            "option_type": "image",
+            "source_data": [
+                "heroes"
+            ],
+            "info": "All heroes has the primary attribute.",
+            "level": "easy"
+        },
+        {
+            "id": 3,
+            "question": "What is the base movement speed for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ],
+            "info": "Base movement speed is the the speed without items or abilities that can affect it.",
+            "level": "medium"
+        },
+        {
+            "id": 4,
+            "question": "What is the starting main attack damage for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ],
+            "info": "Starting main attack damage is the hero level 1 attack damage, without items or abilities that can affect it.",
+            "level": "medium"
+        },
+        {
+            "id": 5,
+            "question": "What is the starting armor for {replace}?",
+            "content_type": "image",
+            "option_type": "text_icon",
+            "source_data": [
+                "heroes"
+            ],
+            "info": "Starting armor is the hero level 1 armor, without items or abilities that can affect it."
+        },
+        {
+            "id": 6,
             "question": "What hero has this attack sound?",
             "content_type": "sound_hero_attack",
             "option_type": "image",
@@ -20,7 +65,7 @@
             ]
         },
         {
-            "id": 3,
+            "id": 7,
             "question": "Which item has the following combinations?",
             "content_type": "item_combinations",
             "option_type": "image",
@@ -46,40 +91,14 @@
                 "heroes"
             ]
         },
-        {
-            "id": 6,
-            "question": "What is the base movement speed for {replace}?",
-            "content_type": "image",
-            "option_type": "text_icon",
-            "source_data": [
-                "heroes"
-            ]
-        },
-        {
-            "id": 7,
-            "question": "What is the base attack for {replace}?",
-            "content_type": "image",
-            "option_type": "text_icon",
-            "source_data": [
-                "heroes"
-            ]
-        },
-        {
-            "id": 8,
-            "question": "What is the base armor for {replace}?",
-            "content_type": "image",
-            "option_type": "text_icon",
-            "source_data": [
-                "heroes"
-            ]
-        },
+
         {
             "id": 9,
-            "question": "What is the base health and mana for {replace}?",
+            "question": "What is the cooldown of {replace}?",
             "content_type": "image",
-            "option_type": "custom_health_mana_bar",
+            "option_type": "text_icon",
             "source_data": [
-                "heroes"
+                "items"
             ]
         },
         {
@@ -184,15 +203,6 @@
             ]
         },
         {
-            "id": 21,
-            "question": "What is the cooldown of {replace}?",
-            "content_type": "image",
-            "option_type": "text_icon",
-            "source_data": [
-                "items"
-            ]
-        },
-        {
             "id": 22,
             "question": "What spell is invoked by this combination?",
             "content_type": "quas_wex_exort",
@@ -201,6 +211,16 @@
                 "abilities",
                 "invoker"
             ]
+        },
+        {
+            "id": 9,
+            "question": "What is the starting health and mana for {replace}?",
+            "content_type": "image",
+            "option_type": "custom_health_mana_bar",
+            "source_data": [
+                "heroes"
+            ],
+            "info": "Starting health and mana is the hero level 1 health and mana bar without items or abilities that can affect it."
         }
     ]
 }
