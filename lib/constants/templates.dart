@@ -7,8 +7,8 @@ class Templates {
       4; // What is the base attack for {replace}?
   static const int whatIsTheBaseArmorFor =
       5; // What is the base armor for {replace}?
-  static const int whatIsTheBaseHealthAndManaFor =
-      9; // What is the base health and mana for {replace}?
+  // static const int whatIsTheBaseHealthAndManaFor =
+  //     9; // What is the base health and mana for {replace}?
   // Which hero has this ability?
   // What is the name of this ability?
   // What is the mana cost for {replace}?

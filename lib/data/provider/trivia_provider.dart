@@ -63,6 +63,14 @@ class TriviaProvider {
         .toList();
   }
 
+  // Future<List<int>> getAllHeroesMoveSpeed() async {
+
+  // }
+
+  // Future<HeroItem> getRandomHeroes() async {
+  //   final hero = await (await _triviaDatabase.db)?.rawQuery('SELECT * FROM heroes ORDER BY RANDOM() ASC LIMIT ?')
+  // }
+
   Future<TemplateItem> getTemplateById(int id) async {
     final templates = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM templates WHERE template_id = ?', [id]);

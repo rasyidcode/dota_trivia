@@ -54,6 +54,7 @@ class QuestionArea extends StatelessWidget {
             child: BlocSelector<TriviaCubit, TriviaState, String?>(
               selector: (state) => state.question?.template?.info,
               builder: (context, info) {
+                print(info);
                 return info != null
                     ? QuestionInfoButton(info: info)
                     : const SizedBox();

@@ -1,8 +1,6 @@
 import 'package:dota_trivia/constants/colors.dart';
 import 'package:dota_trivia/injection_container.dart';
-import 'package:dota_trivia/ui/home/home_page.dart';
 import 'package:dota_trivia/ui/splash/splash_page.dart';
-import 'package:dota_trivia/ui/trivia/trivia_page.dart';
 import 'package:flutter/material.dart';
 
 void main() async {

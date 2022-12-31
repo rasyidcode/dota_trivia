@@ -97,7 +97,5 @@ class TriviaCubit extends Cubit<TriviaState> {
     if (change.nextState.isInitial) {
       getQuestion();
     }
-
-    print(change);
   }
 }

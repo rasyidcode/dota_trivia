@@ -39,8 +39,10 @@ class TriviaRepository {
       Templates.whatIsTheBaseAttackFor,
       Templates.whatIsTheBaseArmorFor
     ];
-    TemplateItem template =
-        await _triviaProvider.getTemplateById((templates..shuffle()).first);
+    // TemplateItem template =
+    //     await _triviaProvider.getTemplateById((templates..shuffle()).first);
+    TemplateItem template = await _triviaProvider
+        .getTemplateById(Templates.whatIsTheBaseMovementSpeedFor);
 
     switch (template.templateId) {
       case Templates.whatIsTheNameOfThisHero:
@@ -64,24 +66,53 @@ class TriviaRepository {
         break;
       case Templates.whatIsTheBaseMovementSpeedFor:
         List<HeroItem> heroes = await _triviaProvider.getRandomHeroes(4);
-        HeroItem correctOpt = (heroes..shuffle()).first;
+        List<int?> moveSpeeds =
+            heroes.map((h) => h.moveSpeed).toList().toSet().toList();
+
+        //       List<int> msBanks = [280, 285, 285, 290, 290, 295, 300, 300, 300, 305, 310, 315];
+        // List<int> ms = (msBanks..shuffle()).take(4).toList();
+
+        // List<int> idx = findDuplicate(ms);
+        // print(idx);
+        // while(idx.length >= 2) {
+        //   List<int> ch = (msBanks..shuffle()).take(idx.length - 1).toList();
+        // }
+
+//   List<int> findDuplicate(List<int> nums) {
+//   List<int> idx = [];
+
+//   for (int i = 0; i < nums.length; i++) {
+//     for (int j = i + 1; j < nums.length; j++) {
+//       if (nums[i] == nums[j]) {
+//         idx.addAll([i, j]);
+//       }
+//     }
+//   }
+
+//   return idx;
+// }
+
+        if (moveSpeeds.length < 4) {}
+
+        HeroItem correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
         question = QuestionItem.fromJson({
           'question': template.question?.replaceFirst(
-              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
-          'content_url': correctOpt.img,
+              RegExp(r'{replace}'), correctHero.localizedName ?? ''),
+          'content_url': correctHero.img,
           'template_id': template.id,
           'options': (heroes..shuffle())
               .map(
-                (optHero) => OptionItem.fromJson({
+                (optHero) => {
                   'label': labels[heroes.indexOf(optHero)],
                   'content': optHero.moveSpeed.toString(),
-                  'is_correct': correctOpt.id == optHero.id
-                }),
+                  'is_correct': correctHero.id == optHero.id
+                },
               )
               .toList()
         });
+
         break;
       case Templates.whatIsTheBaseAttackFor:
         List<HeroItem> heroes = await _triviaProvider.getRandomHeroes(4);
@@ -95,12 +126,12 @@ class TriviaRepository {
           'template_id': template.id,
           'options': (heroes..shuffle())
               .map(
-                (optHero) => OptionItem.fromJson({
+                (optHero) => {
                   'label': labels[heroes.indexOf(optHero)],
                   'content':
                       '${optHero.getMinAttack()} - ${optHero.getMaxAttack()}',
                   'is_correct': correctOpt.id == optHero.id
-                }),
+                },
               )
               .toList()
         });
@@ -114,18 +145,17 @@ class TriviaRepository {
           'question': template.question?.replaceFirst(
               RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
           'content_url': correctOpt.img,
-          'template_id': template.id
+          'template_id': template.id,
+          'options': (heroes..shuffle())
+              .map(
+                (optHero) => {
+                  'label': labels[heroes.indexOf(optHero)],
+                  'content': optHero.getArmor(),
+                  'is_correct': correctOpt.id == optHero.id
+                },
+              )
+              .toList()
         });
-        question.copyWith(
-            options: (heroes..shuffle())
-                .map(
-                  (optHero) => OptionItem.fromJson({
-                    'label': labels[heroes.indexOf(optHero)],
-                    'content': optHero.getArmor(),
-                    'is_correct': correctOpt.id == optHero.id
-                  }),
-                )
-                .toList());
         break;
       default:
         throw TriviaRepositoryException('Template undefined');

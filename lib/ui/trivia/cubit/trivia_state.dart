@@ -34,6 +34,7 @@ class TriviaState extends Equatable {
 
   bool get isInitial => status == TriviaStatus.initial;
   bool get isLoading => status == TriviaStatus.loading;
+  bool get isError => status == TriviaStatus.error;
   bool get isReady => status == TriviaStatus.success && question != null;
   bool get isPlaying => status == TriviaStatus.playing;
   bool get isChecking => status == TriviaStatus.checking;
