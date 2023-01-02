@@ -35,24 +35,24 @@
         },
         {
             "id": 4,
-            "question": "What is the starting main attack damage for {replace}?",
+            "question": "What is the base attack damage for {replace}?",
             "content_type": "image",
             "option_type": "text_icon",
             "source_data": [
                 "heroes"
             ],
-            "info": "Starting main attack damage is the hero level 1 attack damage, without items or abilities that can affect it.",
+            "info": "Base attack damage is the hero level 1 attack damage, without items or abilities that can affect it.",
             "level": "medium"
         },
         {
             "id": 5,
-            "question": "What is the starting armor for {replace}?",
+            "question": "What is the base armor for {replace}?",
             "content_type": "image",
             "option_type": "text_icon",
             "source_data": [
                 "heroes"
             ],
-            "info": "Starting armor is the hero level 1 armor, without items or abilities that can affect it."
+            "info": "Base armor is the hero level 1 armor, without items or abilities that can affect it."
         },
         {
             "id": 6,
