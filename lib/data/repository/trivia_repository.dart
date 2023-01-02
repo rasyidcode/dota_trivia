@@ -4,6 +4,7 @@ import 'package:dota_trivia/data/model/hero_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
 import 'package:dota_trivia/data/model/template_item.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
+import 'package:flutter/material.dart';
 
 class TriviaRepository {
   TriviaRepository(this._triviaProvider);
@@ -39,14 +40,14 @@ class TriviaRepository {
       Templates.whatIsTheBaseAttackFor,
       Templates.whatIsTheBaseArmorFor
     ];
+    TemplateItem template =
+        await _triviaProvider.getTemplateById((templates..shuffle()).first);
     // TemplateItem template =
-    //     await _triviaProvider.getTemplateById((templates..shuffle()).first);
-    TemplateItem template = await _triviaProvider
-        .getTemplateById(Templates.whatIsTheBaseMovementSpeedFor);
+    //     await _triviaProvider.getTemplateById(Templates.whatIsTheBaseArmorFor);
 
     switch (template.templateId) {
       case Templates.whatIsTheNameOfThisHero:
-        List<HeroItem> heroes = await _triviaProvider.getRandomHeroes(4);
+        List<HeroItem> heroes = await _triviaProvider.getRandomHeroesNames(4);
         HeroItem correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
@@ -65,34 +66,12 @@ class TriviaRepository {
 
         break;
       case Templates.whatIsTheBaseMovementSpeedFor:
-        List<HeroItem> heroes = await _triviaProvider.getRandomHeroes(4);
-        List<int?> moveSpeeds =
-            heroes.map((h) => h.moveSpeed).toList().toSet().toList();
+        List<int> ms = await _triviaProvider.getRandomHeroesMoveSpeed(4);
+        List<HeroItem> heroes = [];
 
-        //       List<int> msBanks = [280, 285, 285, 290, 290, 295, 300, 300, 300, 305, 310, 315];
-        // List<int> ms = (msBanks..shuffle()).take(4).toList();
-
-        // List<int> idx = findDuplicate(ms);
-        // print(idx);
-        // while(idx.length >= 2) {
-        //   List<int> ch = (msBanks..shuffle()).take(idx.length - 1).toList();
-        // }
-
-//   List<int> findDuplicate(List<int> nums) {
-//   List<int> idx = [];
-
-//   for (int i = 0; i < nums.length; i++) {
-//     for (int j = i + 1; j < nums.length; j++) {
-//       if (nums[i] == nums[j]) {
-//         idx.addAll([i, j]);
-//       }
-//     }
-//   }
-
-//   return idx;
-// }
-
-        if (moveSpeeds.length < 4) {}
+        for (int m in ms) {
+          heroes.add(await _triviaProvider.getRandomHeroByMoveSpeed(m));
+        }
 
         HeroItem correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
@@ -115,14 +94,23 @@ class TriviaRepository {
 
         break;
       case Templates.whatIsTheBaseAttackFor:
-        List<HeroItem> heroes = await _triviaProvider.getRandomHeroes(4);
-        HeroItem correctOpt = (heroes..shuffle()).first;
+        List<Map<String, int?>> atkdmgs =
+            await _triviaProvider.getRandomHeroesAttackDamage(4);
+        List<HeroItem> heroes = [];
+
+        for (var item in atkdmgs) {
+          HeroItem hero = await _triviaProvider.getRandomHeroByAttackDamage(
+              item['base_attack_min'] ?? 0, item['base_attack_max'] ?? 0);
+          heroes.add(hero);
+        }
+
+        HeroItem correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
         question = QuestionItem.fromJson({
           'question': template.question?.replaceFirst(
-              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
-          'content_url': correctOpt.img,
+              RegExp(r'{replace}'), correctHero.localizedName ?? ''),
+          'content_url': correctHero.img,
           'template_id': template.id,
           'options': (heroes..shuffle())
               .map(
@@ -130,28 +118,35 @@ class TriviaRepository {
                   'label': labels[heroes.indexOf(optHero)],
                   'content':
                       '${optHero.getMinAttack()} - ${optHero.getMaxAttack()}',
-                  'is_correct': correctOpt.id == optHero.id
+                  'is_correct': correctHero.id == optHero.id
                 },
               )
               .toList()
         });
         break;
       case Templates.whatIsTheBaseArmorFor:
-        final heroes = await _triviaProvider.getRandomHeroes(4);
-        final correctOpt = (heroes..shuffle()).first;
-        final labels = ['a', 'b', 'c', 'd'];
+        List<double?> armors = await _triviaProvider.getRandomHeroesArmor(4);
+        List<HeroItem> heroes = [];
+
+        for (double? ar in armors) {
+          HeroItem hero = await _triviaProvider.getRandomHeroByArmor(ar ?? 0.0);
+          heroes.add(hero);
+        }
+
+        HeroItem correctHero = (heroes..shuffle()).first;
+        List<String> labels = ['a', 'b', 'c', 'd'];
 
         question = QuestionItem.fromJson({
           'question': template.question?.replaceFirst(
-              RegExp(r'{replace}'), correctOpt.localizedName ?? ''),
-          'content_url': correctOpt.img,
+              RegExp(r'{replace}'), correctHero.localizedName ?? ''),
+          'content_url': correctHero.img,
           'template_id': template.id,
           'options': (heroes..shuffle())
               .map(
                 (optHero) => {
                   'label': labels[heroes.indexOf(optHero)],
                   'content': optHero.getArmor(),
-                  'is_correct': correctOpt.id == optHero.id
+                  'is_correct': correctHero.id == optHero.id
                 },
               )
               .toList()

@@ -14,12 +14,6 @@ class TimerArea extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<TriviaCubit>(context).toggleTimer();
-              },
-              child: const Text('Toggle Timer'),
-            ),
             BlocBuilder<TriviaCubit, TriviaState>(
               builder: (context, state) {
                 if (state.isInitial || state.isLoading || state.isChecking) {
@@ -61,46 +55,6 @@ class TimerArea extends StatelessWidget {
                     ],
                   );
                 }
-
-                // if (state.isLoadingQuestion ||
-                //     state.isTriviaCheckingPlayerOption) {
-                //   return const TimerLoading();
-                // } else if (state.isTriviaOngoing) {
-                //   return TimerTicking(
-                //       seconds: state.timer != null ? state.timer! : 0);
-                // } else if (state.isTriviaShowingResult) {
-                //   if (playerOpt == null) {
-                //     return const NoAnswerSubmitted();
-                //   }
-                //   String result = 'INCORRECT';
-                //   bool isCorrect = false;
-
-                //   if (correctOpt != null) {
-                //     isCorrect = playerOpt == correctOpt;
-                //     result = isCorrect ? 'CORRECT' : 'INCORRECT';
-                //   }
-
-                //   return Column(
-                //     children: [
-                //       Text(
-                //         result,
-                //         style:
-                //             Theme.of(context).textTheme.displayMedium?.copyWith(
-                //                   color: Colors.deepOrangeAccent,
-                //                 ),
-                //       ),
-                //       isCorrect
-                //           ? Text(
-                //               '+100 TRIVIA POINTS',
-                //               style: Theme.of(context)
-                //                   .textTheme
-                //                   .headlineSmall
-                //                   ?.copyWith(color: Colors.deepOrangeAccent),
-                //             )
-                //           : Container(),
-                //     ],
-                //   );
-                // }
 
                 return Container();
               },

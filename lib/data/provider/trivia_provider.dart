@@ -10,9 +10,9 @@ class TriviaProvider {
 
   final TriviaDatabase _triviaDatabase;
 
-  Future<List<HeroItem>> getRandomHeroes(int count) async {
-    final heroes = await (await _triviaDatabase.db)?.rawQuery(
-        'SELECT * FROM heroes ORDER BY RANDOM() ASC LIMIT ?', [count]);
+  Future<List<HeroItem>> getHero(int id) async {
+    final heroes = await (await _triviaDatabase.db)
+        ?.rawQuery('SELECT * FROM heroes WHERE id = ?', [id]);
 
     if (heroes == null) {
       throw TriviaProviderException('Heroes returns null');
@@ -63,13 +63,205 @@ class TriviaProvider {
         .toList();
   }
 
-  // Future<List<int>> getAllHeroesMoveSpeed() async {
+  Future<List<HeroItem>> getRandomHeroesNames(int count) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+        SELECT
+          id,
+          localized_name,
+          img
+        FROM
+          heroes
+        ORDER BY RANDOM() ASC LIMIT ?
+        ''', [count]);
 
-  // }
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
 
-  // Future<HeroItem> getRandomHeroes() async {
-  //   final hero = await (await _triviaDatabase.db)?.rawQuery('SELECT * FROM heroes ORDER BY RANDOM() ASC LIMIT ?')
-  // }
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes
+        .map((h) => HeroItem.fromJson({
+              'id': h['id'],
+              'localized_name': h['localized_name'],
+              'img': h['img']
+            }))
+        .toList();
+  }
+
+  Future<List<int>> getRandomHeroesMoveSpeed(int count) async {
+    final ms = await (await _triviaDatabase.db)?.rawQuery('''
+        SELECT DISTINCT
+          move_speed
+        FROM
+          heroes
+        ORDER BY RANDOM() ASC LIMIT ?
+        ''', [count]);
+
+    if (ms == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (ms.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return ms.map((m) => m['move_speed'] as int).toList();
+  }
+
+  Future<HeroItem> getRandomHeroByMoveSpeed(int ms) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+        SELECT
+          id,
+          localized_name,
+          img,
+          move_speed
+        FROM
+          heroes
+        WHERE move_speed = ?
+        ORDER BY RANDOM() ASC LIMIT ?
+        ''', [ms, 1]);
+
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes
+        .map((h) => HeroItem.fromJson({
+              'id': h['id'],
+              'localized_name': h['localized_name'],
+              'img': h['img'],
+              'move_speed': h['move_speed'],
+            }))
+        .toList()
+        .first;
+  }
+
+  Future<List<Map<String, int?>>> getRandomHeroesAttackDamage(int count) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+      SELECT DISTINCT
+        base_attack_min,
+        base_attack_max
+      FROM
+        heroes
+      ORDER BY RANDOM() ASC LIMIT ?''', [count]);
+
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes
+        .map((h) => {
+              'base_attack_min': h['base_attack_min'] as int?,
+              'base_attack_max': h['base_attack_max'] as int?,
+            })
+        .toList();
+  }
+
+  Future<HeroItem> getRandomHeroByAttackDamage(int min, int max) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+      SELECT
+        id,
+        localized_name,
+        img,
+        primary_attr,
+        base_attack_min,
+        base_attack_max,
+        base_str,
+        base_agi,
+        base_int
+      FROM
+        heroes
+      WHERE
+        base_attack_min = ? AND base_attack_max = ?
+      ORDER BY RANDOM() ASC LIMIT ?''', [min, max, 1]);
+
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes
+        .map((h) => HeroItem.fromJson({
+              'id': h['id'],
+              'localized_name': h['localized_name'],
+              'img': h['img'],
+              'primary_attr': h['primary_attr'],
+              'base_attack_min': h['base_attack_min'],
+              'base_attack_max': h['base_attack_max'],
+              'base_str': h['base_str'],
+              'base_agi': h['base_agi'],
+              'base_int': h['base_int'],
+            }))
+        .toList()
+        .first;
+  }
+
+  Future<List<double?>> getRandomHeroesArmor(int count) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+      SELECT DISTINCT
+        base_armor
+      FROM
+        heroes
+      ORDER BY RANDOM() ASC LIMIT ?''', [count]);
+
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes.map((h) => h['base_armor'] as double?).toList();
+  }
+
+  Future<HeroItem> getRandomHeroByArmor(double armor) async {
+    final heroes = await (await _triviaDatabase.db)?.rawQuery('''
+      SELECT
+        id,
+        localized_name,
+        img,
+        base_armor,
+        base_agi
+      FROM
+        heroes
+      WHERE
+        base_armor = ?
+      ORDER BY RANDOM() ASC LIMIT ?''', [armor, 1]);
+
+    if (heroes == null) {
+      throw TriviaProviderException('Heroes returns null');
+    }
+
+    if (heroes.isEmpty) {
+      throw TriviaProviderException('Heroes returns empty');
+    }
+
+    return heroes
+        .map((h) => HeroItem.fromJson({
+              'id': h['id'],
+              'localized_name': h['localized_name'],
+              'img': h['img'],
+              'base_armor': h['base_armor'],
+              'base_agi': h['base_agi'],
+            }))
+        .toList()
+        .first;
+  }
 
   Future<TemplateItem> getTemplateById(int id) async {
     final templates = await (await _triviaDatabase.db)
@@ -212,8 +404,6 @@ class TriviaProvider {
 
     await batch?.commit(noResult: true);
   }
-
-  ///
 }
 
 class TriviaProviderException implements Exception {

@@ -18,14 +18,20 @@ class QuestionArea extends StatelessWidget {
             width: double.infinity,
             child: BlocSelector<TriviaCubit, TriviaState, String?>(
               selector: (state) => state.question?.question,
-              builder: (context, q) => Text(
-                q ?? '',
-                textAlign: TextAlign.left,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.w500,
+              builder: (context, q) => q == null
+                  ? Container(
+                      color: Colors.white12,
+                      height: 14.0,
+                      width: double.infinity,
+                    )
+                  : Text(
+                      q,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Colors.deepOrangeAccent,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
-              ),
             ),
           ),
           const SizedBox(height: 8.0),
@@ -39,12 +45,8 @@ class QuestionArea extends StatelessWidget {
                 : Container(
                     height: 80.0,
                     width: 150.0,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white54.withOpacity(0.3),
-                        width: 1.3,
-                      ),
-                      gradient: const LinearGradient(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
                           colors: [Colors.white12, Colors.white12]),
                     ),
                   ),
@@ -54,7 +56,6 @@ class QuestionArea extends StatelessWidget {
             child: BlocSelector<TriviaCubit, TriviaState, String?>(
               selector: (state) => state.question?.template?.info,
               builder: (context, info) {
-                print(info);
                 return info != null
                     ? QuestionInfoButton(info: info)
                     : const SizedBox();
