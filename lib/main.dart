@@ -1,31 +1,26 @@
-import 'package:dota_trivia/constants/colors.dart';
-import 'package:dota_trivia/injection_container.dart';
-import 'package:dota_trivia/ui/splash/splash_page.dart';
-// import 'package:dota_trivia/ui/trivia/trivia_page.dart';
+import 'package:dota_trivia/app.dart';
+import 'package:dota_trivia/data/database/trivia_database.dart';
+import 'package:dota_trivia/data/provider/trivia_provider.dart';
+import 'package:dota_trivia/data/repository/trivia_repository.dart';
+import 'package:dota_trivia/data/ticker/ticker_data.dart';
+import 'package:dota_trivia/dota_trivia_observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sqflite/sqflite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initKiwi();
 
-  runApp(const DotaTriviaApp());
-}
+  Bloc.observer = DotaTriviaBlocObserver();
 
-class DotaTriviaApp extends StatelessWidget {
-  const DotaTriviaApp({super.key});
+  final TriviaDatabase triviaDatabase =
+      TriviaDatabase(await getDatabasesPath());
+  final TriviaProvider triviaProvider = TriviaProvider(triviaDatabase);
+  final TickerData tickerData = TickerData();
+  final TriviaRepository triviaRepository =
+      TriviaRepository(triviaProvider, tickerData);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dota Trivia',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: kBackgroundColor,
-        colorScheme: ThemeData.dark().colorScheme.copyWith(
-              primary: kPrimaryColor,
-            ),
-      ),
-      home: const SplashPage(),
-    );
-  }
+  runApp(DotaTriviaApp(
+    triviaRepository: triviaRepository,
+  ));
 }

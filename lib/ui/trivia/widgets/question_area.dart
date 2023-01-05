@@ -14,54 +14,67 @@ class QuestionArea extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          SizedBox(
+          // SizedBox(
+          //   width: double.infinity,
+          //   child: BlocSelector<TriviaCubit, TriviaState, String?>(
+          //     selector: (state) => state.question?.question,
+          //     builder: (context, q) => q == null
+          //         ? Container(
+          //             color: Colors.white12,
+          //             height: 14.0,
+          //             width: double.infinity,
+          //           )
+          //         : Text(
+          //             q,
+          //             textAlign: TextAlign.left,
+          //             style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          //                   color: Colors.deepOrangeAccent,
+          //                   fontWeight: FontWeight.w500,
+          //                 ),
+          //           ),
+          //   ),
+          // ),
+          Container(
+            color: Colors.white12,
+            height: 14.0,
             width: double.infinity,
-            child: BlocSelector<TriviaCubit, TriviaState, String?>(
-              selector: (state) => state.question?.question,
-              builder: (context, q) => q == null
-                  ? Container(
-                      color: Colors.white12,
-                      height: 14.0,
-                      width: double.infinity,
-                    )
-                  : Text(
-                      q,
-                      textAlign: TextAlign.left,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.deepOrangeAccent,
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-            ),
           ),
           const SizedBox(height: 8.0),
-          BlocSelector<TriviaCubit, TriviaState, String?>(
-            selector: (state) => state.question?.contentUrl,
-            builder: (context, contentUrl) => contentUrl != null
-                ? Image.network(
-                    '${Apis.steamAssetURL}$contentUrl',
-                    height: 80.0,
-                  )
-                : Container(
-                    height: 80.0,
-                    width: 150.0,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.white12, Colors.white12]),
-                    ),
-                  ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: BlocSelector<TriviaCubit, TriviaState, String?>(
-              selector: (state) => state.question?.template?.info,
-              builder: (context, info) {
-                return info != null
-                    ? QuestionInfoButton(info: info)
-                    : const SizedBox();
-              },
+          // BlocSelector<TriviaCubit, TriviaState, String?>(
+          //   selector: (state) => state.question?.contentUrl,
+          //   builder: (context, contentUrl) => contentUrl != null
+          //       ? Image.network(
+          //           '${Apis.steamAssetURL}$contentUrl',
+          //           height: 80.0,
+          //         )
+          //       : Container(
+          //           height: 80.0,
+          //           width: 150.0,
+          //           decoration: const BoxDecoration(
+          //             gradient: LinearGradient(
+          //                 colors: [Colors.white12, Colors.white12]),
+          //           ),
+          //         ),
+          // ),
+          Container(
+            height: 80.0,
+            width: 150.0,
+            decoration: const BoxDecoration(
+              gradient:
+                  LinearGradient(colors: [Colors.white12, Colors.white12]),
             ),
-          )
+          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: BlocSelector<TriviaCubit, TriviaState, String?>(
+          //     selector: (state) => state.question?.template?.info,
+          //     builder: (context, info) {
+          //       return info != null
+          //           ? QuestionInfoButton(info: info)
+          //           : const SizedBox();
+          //     },
+          //   ),
+          // )
         ],
       ),
     );

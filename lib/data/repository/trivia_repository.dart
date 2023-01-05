@@ -4,12 +4,15 @@ import 'package:dota_trivia/data/model/hero_item.dart';
 import 'package:dota_trivia/data/model/question_item.dart';
 import 'package:dota_trivia/data/model/template_item.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:dota_trivia/data/ticker/ticker_data.dart';
 
 class TriviaRepository {
-  TriviaRepository(this._triviaProvider);
+  TriviaRepository(this._triviaProvider, this._tickerData);
 
   final TriviaProvider _triviaProvider;
+  final TickerData _tickerData;
+
+  Stream<int> tick(int ticks) => _tickerData.tick(ticks: ticks);
 
   /// Get a question data
   /// Throws an [TriviaRepositoryException] if question id is null

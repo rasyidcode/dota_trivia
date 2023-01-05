@@ -39,8 +39,8 @@ class ActionMenu extends StatelessWidget {
         const SizedBox(height: 8.0),
         ElevatedButton.icon(
           onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const TriviaPage()));
+            // Navigator.of(context).push(
+            //     MaterialPageRoute(builder: (context) => const TriviaPage()));
           },
           icon: const Icon(Icons.play_arrow),
           label: Text(
