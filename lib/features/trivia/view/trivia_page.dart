@@ -1,13 +1,8 @@
-import 'dart:ui';
-
 import 'package:dota_trivia/constants/apis.dart';
-import 'package:dota_trivia/constants/colors.dart';
 import 'package:dota_trivia/constants/templates.dart';
 import 'package:dota_trivia/data/model/common/option_item.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
-import 'package:dota_trivia/trivia/bloc/trivia_bloc.dart';
-import 'package:dota_trivia/ui/trivia/widgets/question_area.dart';
-import 'package:dota_trivia/ui/trivia/widgets/top_bar.dart';
+import 'package:dota_trivia/features/trivia/triva.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

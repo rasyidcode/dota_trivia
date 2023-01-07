@@ -1,20 +1,42 @@
-import 'package:dota_trivia/constants/colors.dart';
+import 'package:dota_trivia/data/repository/data_repository.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
-import 'package:dota_trivia/trivia/triva.dart';
+import 'package:dota_trivia/features/splash/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DotaTriviaApp extends StatelessWidget {
-  const DotaTriviaApp({super.key, required TriviaRepository triviaRepository})
-      : _triviaRepository = triviaRepository;
+  const DotaTriviaApp({
+    super.key,
+    required TriviaRepository triviaRepository,
+    required DataRepository dataRepository,
+  })  : _triviaRepository = triviaRepository,
+        _dataRepository = dataRepository;
 
   final TriviaRepository _triviaRepository;
+  final DataRepository _dataRepository;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _triviaRepository,
-      child: const DotaTriviaView(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(value: _triviaRepository),
+        RepositoryProvider.value(value: _dataRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) => SplashBloc(
+                  dataRepository:
+                      RepositoryProvider.of<DataRepository>(context))),
+          // BlocProvider<TriviaBloc>(
+          //   create: (_) => TriviaBloc(
+          //     triviaRepository:
+          //         RepositoryProvider.of<TriviaRepository>(context),
+          //   ),
+          // ),
+        ],
+        child: const DotaTriviaView(),
+      ),
     );
   }
 }
@@ -24,15 +46,9 @@ class DotaTriviaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Dota Trivia',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: kBackgroundColor,
-        colorScheme: ThemeData.dark().colorScheme.copyWith(
-              primary: kPrimaryColor,
-            ),
-      ),
-      home: const TriviaPage(),
+      home: SplashPage(),
     );
   }
 }

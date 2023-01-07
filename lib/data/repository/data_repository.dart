@@ -4,23 +4,26 @@ import 'package:dota_trivia/data/network/trivia_data_source.dart';
 import 'package:dota_trivia/data/provider/data_provider.dart';
 
 class DataRepository {
-  DataRepository(this._triviaDataSource, this._dataProvider);
+  DataRepository({
+    TriviaDataSource? triviaDataSource,
+    required DataProvider dataProvider,
+  })  : _triviaDataSource = triviaDataSource ?? TriviaDataSource(),
+        _dataProvider = dataProvider;
 
   final TriviaDataSource _triviaDataSource;
   final DataProvider _dataProvider;
 
-  Stream<String> get fetchDataStatusStream => Stream.fromFutures([
-        _fetchTemplates(),
-        _fetchHeroes(),
-        _fetchItems(),
-        _fetchAbilities(),
-      ]);
+  Future<void> fetchData() async {
+    await _fetchTemplates();
+    await _fetchHeroes();
+    await _fetchItems();
+    await _fetchAbilities();
+    await Future.delayed(const Duration(seconds: 3));
+  }
 
   /// Fetch templates data from data source and save it locally
-  Future<String> _fetchTemplates() async {
-    final isTemplatesDataExist = await _dataProvider.isTemplatesDataExist();
-
-    if (!isTemplatesDataExist) {
+  Future<void> _fetchTemplates() async {
+    if (!await _dataProvider.isTemplatesDataExist()) {
       final templates = await _triviaDataSource.fetchTemplates();
 
       await _dataProvider.clearTemplates();
@@ -29,17 +32,11 @@ class DataRepository {
         List<Map<String, dynamic>>.from(templates['data']),
       );
     }
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    return 'Templates data loaded';
   }
 
   /// Fetch heroes data from data source and save it locally
-  Future<String> _fetchHeroes() async {
-    final isHeroesDataExist = await _dataProvider.isHeroesDataExist();
-
-    if (!isHeroesDataExist) {
+  Future<void> _fetchHeroes() async {
+    if (!await _dataProvider.isHeroesDataExist()) {
       final heroes = await _triviaDataSource.fetchHeroes();
       final abilities = await _triviaDataSource.fetchHeroAbilities();
 
@@ -47,43 +44,27 @@ class DataRepository {
 
       await _dataProvider.insertHeroes(heroes, abilities);
     }
-
-    await Future.delayed(const Duration(seconds: 4));
-
-    return 'Heroes data loaded';
   }
 
   /// Fetch items data from data source and save it locally
-  Future<String> _fetchItems() async {
-    final isItemsDataExist = await _dataProvider.isItemsDataExist();
-
-    if (!isItemsDataExist) {
+  Future<void> _fetchItems() async {
+    if (!await _dataProvider.isItemsDataExist()) {
       final items = await _triviaDataSource.fetchItems();
 
       await _dataProvider.clearItems();
 
       await _dataProvider.insertItems(items);
     }
-
-    await Future.delayed(const Duration(seconds: 6));
-
-    return 'Items data loaded';
   }
 
   /// Fetch abilities from data source and save it locally
-  Future<String> _fetchAbilities() async {
-    final isAbilitiesDataExist = await _dataProvider.isAbilitiesDataExist();
-
-    if (!isAbilitiesDataExist) {
+  Future<void> _fetchAbilities() async {
+    if (!await _dataProvider.isAbilitiesDataExist()) {
       final abilities = await _triviaDataSource.fetchAbilities();
 
       await _dataProvider.clearAbilities();
 
       await _dataProvider.insertAbilities(abilities);
     }
-
-    await Future.delayed(const Duration(seconds: 8));
-
-    return 'Abilities data loaded';
   }
 }
