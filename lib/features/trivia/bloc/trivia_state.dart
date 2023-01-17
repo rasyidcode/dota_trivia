@@ -14,7 +14,7 @@ class TriviaInitial extends TriviaState {
 }
 
 class TriviaLoading extends TriviaState {
-  const TriviaLoading(QuestionItem data) : super(data);
+  const TriviaLoading(QuestionItem? data) : super(data);
 }
 
 class TriviaInProgress extends TriviaState {
@@ -33,6 +33,10 @@ class TriviaInProgress extends TriviaState {
   String? get playerAnswer => _playerAnswer;
 }
 
+class TriviaChecking extends TriviaState {
+  const TriviaChecking(QuestionItem? data) : super(data);
+}
+
 class TriviaFinish extends TriviaState {
   const TriviaFinish({
     required QuestionItem data,
@@ -43,6 +47,12 @@ class TriviaFinish extends TriviaState {
   final bool _isCorrect;
 
   bool get isCorrect => _isCorrect;
+}
+
+class TriviaError extends TriviaState {
+  const TriviaError(this.error) : super(null);
+
+  final String error;
 }
 
 /// States

@@ -1,3 +1,4 @@
+import 'package:dota_trivia/features/menu/view/menu_view.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatelessWidget {
@@ -5,10 +6,6 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Main Menu'),
-      ),
-    );
+    return const MenuView();
   }
 }

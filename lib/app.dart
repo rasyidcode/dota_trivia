@@ -1,6 +1,7 @@
 import 'package:dota_trivia/data/repository/data_repository.dart';
 import 'package:dota_trivia/data/repository/trivia_repository.dart';
 import 'package:dota_trivia/features/splash/splash.dart';
+import 'package:dota_trivia/features/trivia/triva.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,21 +23,7 @@ class DotaTriviaApp extends StatelessWidget {
         RepositoryProvider.value(value: _triviaRepository),
         RepositoryProvider.value(value: _dataRepository),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-              create: (_) => SplashBloc(
-                  dataRepository:
-                      RepositoryProvider.of<DataRepository>(context))),
-          // BlocProvider<TriviaBloc>(
-          //   create: (_) => TriviaBloc(
-          //     triviaRepository:
-          //         RepositoryProvider.of<TriviaRepository>(context),
-          //   ),
-          // ),
-        ],
-        child: const DotaTriviaView(),
-      ),
+      child: const DotaTriviaView(),
     );
   }
 }
@@ -46,9 +33,17 @@ class DotaTriviaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Dota Trivia',
-      home: SplashPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Colors.grey[900],
+          progressIndicatorTheme: ThemeData.dark()
+              .progressIndicatorTheme
+              .copyWith(color: Colors.white70),
+          colorScheme:
+              ThemeData.dark().colorScheme.copyWith(secondary: Colors.white70)),
+      home: const SplashPage(),
     );
   }
 }

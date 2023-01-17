@@ -18,6 +18,8 @@ class TriviaRepository {
   /// Throws an [TriviaRepositoryException] if question id is null
   /// Returns [QuestionItem] object
   Future<QuestionItem> getQuestion() async {
+    await _generateQuestion();
+
     QuestionItem question = await _triviaProvider.getLastQuestion();
     if (question.id == null) {
       throw TriviaRepositoryException('Question id is not defined');
@@ -34,7 +36,7 @@ class TriviaRepository {
 
   /// Generate a question based on template & save it locally to database
   /// Throws an [TriviaRepositoryException] if template id is not found
-  Future<void> generateQuestion() async {
+  Future<void> _generateQuestion() async {
     QuestionItem question;
 
     List<int> templates = [

@@ -1,4 +1,5 @@
 import 'package:dota_trivia/features/splash/splash.dart';
+import 'package:dota_trivia/features/splash/widget/splash_icon.dart';
 import 'package:dota_trivia/features/splash/widget/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +23,7 @@ class SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return Stack(
       children: const [
-        Center(
-          child: Text('DOTA TRIVIA'),
-        ),
+        SplashIcon(),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
