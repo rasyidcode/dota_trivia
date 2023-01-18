@@ -1,12 +1,12 @@
-import 'package:dota_trivia/data/model/common/option_item.dart';
-import 'package:dota_trivia/data/model/template_item.dart';
+import 'package:dota_trivia/data/model/common/option.dart';
+import 'package:dota_trivia/data/model/template.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'question_item.g.dart';
+part 'question.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class QuestionItem {
-  QuestionItem({
+class Question {
+  Question({
     this.id,
     this.question,
     this.contentUrl,
@@ -21,18 +21,18 @@ class QuestionItem {
   final String? contentUrl;
   @JsonKey(name: 'template_id')
   final int? templateId;
-  final List<OptionItem>? options;
-  final TemplateItem? template;
+  final List<Option>? options;
+  final Template? template;
 
-  QuestionItem copyWith({
+  Question copyWith({
     int? id,
     String? question,
     String? contentUrl,
     int? templateId,
-    List<OptionItem>? options,
-    TemplateItem? template,
+    List<Option>? options,
+    Template? template,
   }) {
-    return QuestionItem(
+    return Question(
       id: id ?? this.id,
       question: question ?? this.question,
       contentUrl: contentUrl ?? this.contentUrl,
@@ -42,8 +42,8 @@ class QuestionItem {
     );
   }
 
-  factory QuestionItem.fromJson(Map<String, dynamic> json) =>
-      _$QuestionItemFromJson(json);
+  factory Question.fromJson(Map<String, dynamic> json) =>
+      _$QuestionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$QuestionItemToJson(this);
+  Map<String, dynamic> toJson() => _$QuestionToJson(this);
 }

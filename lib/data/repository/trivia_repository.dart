@@ -1,8 +1,8 @@
 import 'package:dota_trivia/constants/templates.dart';
-import 'package:dota_trivia/data/model/common/option_item.dart';
-import 'package:dota_trivia/data/model/hero_item.dart';
-import 'package:dota_trivia/data/model/question_item.dart';
-import 'package:dota_trivia/data/model/template_item.dart';
+import 'package:dota_trivia/data/model/common/option.dart';
+import 'package:dota_trivia/data/model/hero.dart';
+import 'package:dota_trivia/data/model/question.dart';
+import 'package:dota_trivia/data/model/template.dart';
 import 'package:dota_trivia/data/provider/trivia_provider.dart';
 import 'package:dota_trivia/data/ticker/ticker_data.dart';
 
@@ -17,16 +17,16 @@ class TriviaRepository {
   /// Get a question data
   /// Throws an [TriviaRepositoryException] if question id is null
   /// Returns [QuestionItem] object
-  Future<QuestionItem> getQuestion() async {
+  Future<Question> getQuestion() async {
     await _generateQuestion();
 
-    QuestionItem question = await _triviaProvider.getLastQuestion();
+    Question question = await _triviaProvider.getLastQuestion();
     if (question.id == null) {
       throw TriviaRepositoryException('Question id is not defined');
     }
 
-    List<OptionItem> options = await _triviaProvider.getOptions(question.id!);
-    TemplateItem? template;
+    List<Option> options = await _triviaProvider.getOptions(question.id!);
+    Template? template;
     if (question.templateId != null) {
       template = await _triviaProvider.getTemplateById(question.templateId!);
     }
@@ -37,7 +37,7 @@ class TriviaRepository {
   /// Generate a question based on template & save it locally to database
   /// Throws an [TriviaRepositoryException] if template id is not found
   Future<void> _generateQuestion() async {
-    QuestionItem question;
+    Question question;
 
     List<int> templates = [
       Templates.whatIsTheNameOfThisHero,
@@ -45,18 +45,18 @@ class TriviaRepository {
       Templates.whatIsTheBaseAttackFor,
       Templates.whatIsTheBaseArmorFor
     ];
-    TemplateItem template =
+    Template template =
         await _triviaProvider.getTemplateById((templates..shuffle()).first);
     // TemplateItem template =
     //     await _triviaProvider.getTemplateById(Templates.whatIsTheBaseArmorFor);
 
     switch (template.templateId) {
       case Templates.whatIsTheNameOfThisHero:
-        List<HeroItem> heroes = await _triviaProvider.getRandomHeroesNames(4);
-        HeroItem correctHero = (heroes..shuffle()).first;
+        List<Hero> heroes = await _triviaProvider.getRandomHeroesNames(4);
+        Hero correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
-        question = QuestionItem.fromJson({
+        question = Question.fromJson({
           'question': template.question,
           'content_url': correctHero.img,
           'template_id': template.id,
@@ -72,16 +72,16 @@ class TriviaRepository {
         break;
       case Templates.whatIsTheBaseMovementSpeedFor:
         List<int> ms = await _triviaProvider.getRandomHeroesMoveSpeed(4);
-        List<HeroItem> heroes = [];
+        List<Hero> heroes = [];
 
         for (int m in ms) {
           heroes.add(await _triviaProvider.getRandomHeroByMoveSpeed(m));
         }
 
-        HeroItem correctHero = (heroes..shuffle()).first;
+        Hero correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
-        question = QuestionItem.fromJson({
+        question = Question.fromJson({
           'question': template.question?.replaceFirst(
               RegExp(r'{replace}'), correctHero.localizedName ?? ''),
           'content_url': correctHero.img,
@@ -101,18 +101,18 @@ class TriviaRepository {
       case Templates.whatIsTheBaseAttackFor:
         List<Map<String, int?>> atkdmgs =
             await _triviaProvider.getRandomHeroesAttackDamage(4);
-        List<HeroItem> heroes = [];
+        List<Hero> heroes = [];
 
         for (var item in atkdmgs) {
-          HeroItem hero = await _triviaProvider.getRandomHeroByAttackDamage(
+          Hero hero = await _triviaProvider.getRandomHeroByAttackDamage(
               item['base_attack_min'] ?? 0, item['base_attack_max'] ?? 0);
           heroes.add(hero);
         }
 
-        HeroItem correctHero = (heroes..shuffle()).first;
+        Hero correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
-        question = QuestionItem.fromJson({
+        question = Question.fromJson({
           'question': template.question?.replaceFirst(
               RegExp(r'{replace}'), correctHero.localizedName ?? ''),
           'content_url': correctHero.img,
@@ -131,17 +131,17 @@ class TriviaRepository {
         break;
       case Templates.whatIsTheBaseArmorFor:
         List<double?> armors = await _triviaProvider.getRandomHeroesArmor(4);
-        List<HeroItem> heroes = [];
+        List<Hero> heroes = [];
 
         for (double? ar in armors) {
-          HeroItem hero = await _triviaProvider.getRandomHeroByArmor(ar ?? 0.0);
+          Hero hero = await _triviaProvider.getRandomHeroByArmor(ar ?? 0.0);
           heroes.add(hero);
         }
 
-        HeroItem correctHero = (heroes..shuffle()).first;
+        Hero correctHero = (heroes..shuffle()).first;
         List<String> labels = ['a', 'b', 'c', 'd'];
 
-        question = QuestionItem.fromJson({
+        question = Question.fromJson({
           'question': template.question?.replaceFirst(
               RegExp(r'{replace}'), correctHero.localizedName ?? ''),
           'content_url': correctHero.img,

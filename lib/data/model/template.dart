@@ -3,11 +3,11 @@ import 'package:dota_trivia/data/model/common/option_type.dart';
 import 'package:dota_trivia/data/model/level.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'template_item.g.dart';
+part 'template.g.dart';
 
 @JsonSerializable()
-class TemplateItem {
-  TemplateItem({
+class Template {
+  Template({
     this.id,
     this.templateId,
     this.question,
@@ -31,8 +31,8 @@ class TemplateItem {
   final String? info;
   final Level? level;
 
-  factory TemplateItem.fromJson(Map<String, dynamic> json) =>
-      _$TemplateItemFromJson(json);
+  factory Template.fromJson(Map<String, dynamic> json) =>
+      _$TemplateFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TemplateItemToJson(this);
+  Map<String, dynamic> toJson() => _$TemplateToJson(this);
 }

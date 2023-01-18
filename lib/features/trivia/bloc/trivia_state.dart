@@ -1,12 +1,18 @@
 part of 'trivia_bloc.dart';
 
-abstract class TriviaState extends Equatable {
-  const TriviaState(this.data);
+enum AnswerStatus {
+  correct,
+  incorrect,
+  noanswer,
+}
 
-  final QuestionItem? data;
+abstract class TriviaState extends Equatable {
+  const TriviaState(this.question);
+
+  final Question? question;
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [question];
 }
 
 class TriviaInitial extends TriviaState {
@@ -14,39 +20,54 @@ class TriviaInitial extends TriviaState {
 }
 
 class TriviaLoading extends TriviaState {
-  const TriviaLoading(QuestionItem? data) : super(data);
+  const TriviaLoading() : super(null);
+}
+
+class TriviaReady extends TriviaState {
+  const TriviaReady({
+    required Question? question,
+    required this.duration,
+  }) : super(question);
+
+  final int duration;
 }
 
 class TriviaInProgress extends TriviaState {
   const TriviaInProgress({
-    required QuestionItem? data,
-    required int timer,
-    required String? playerAnswer,
-  })  : _timer = timer,
-        _playerAnswer = playerAnswer,
-        super(data);
+    required Question? question,
+    required this.timer,
+    this.playerAnswer,
+  }) : super(question);
 
-  final int _timer;
-  final String? _playerAnswer;
-
-  int get timer => _timer;
-  String? get playerAnswer => _playerAnswer;
+  final int timer;
+  final String? playerAnswer;
 }
 
 class TriviaChecking extends TriviaState {
-  const TriviaChecking(QuestionItem? data) : super(data);
+  const TriviaChecking({
+    required Question? question,
+    this.playerAnswer,
+  }) : super(question);
+
+  final String? playerAnswer;
 }
 
-class TriviaFinish extends TriviaState {
-  const TriviaFinish({
-    required QuestionItem data,
-    required bool isCorrect,
-  })  : _isCorrect = isCorrect,
-        super(data);
+class TriviaShowResult extends TriviaState {
+  const TriviaShowResult({
+    required Question? question,
+    required this.status,
+  }) : super(question);
 
-  final bool _isCorrect;
+  final AnswerStatus status;
+}
 
-  bool get isCorrect => _isCorrect;
+class TriviaLoadingNextQuestion extends TriviaState {
+  const TriviaLoadingNextQuestion({
+    required Question? question,
+    required this.status,
+  }) : super(question);
+
+  final AnswerStatus status;
 }
 
 class TriviaError extends TriviaState {
@@ -54,9 +75,3 @@ class TriviaError extends TriviaState {
 
   final String error;
 }
-
-/// States
-/// - initial
-/// - loading
-/// - inprogress
-/// - finish

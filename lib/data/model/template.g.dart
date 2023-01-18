@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'template_item.dart';
+part of 'template.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TemplateItem _$TemplateItemFromJson(Map<String, dynamic> json) => TemplateItem(
+Template _$TemplateFromJson(Map<String, dynamic> json) => Template(
       id: json['id'] as int?,
       templateId: json['template_id'] as int?,
       question: json['question'] as String?,
@@ -20,8 +20,7 @@ TemplateItem _$TemplateItemFromJson(Map<String, dynamic> json) => TemplateItem(
       level: $enumDecodeNullable(_$LevelEnumMap, json['level']),
     );
 
-Map<String, dynamic> _$TemplateItemToJson(TemplateItem instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$TemplateToJson(Template instance) => <String, dynamic>{
       'id': instance.id,
       'template_id': instance.templateId,
       'question': instance.question,

@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'option_item.dart';
+part of 'option.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-OptionItem _$OptionItemFromJson(Map<String, dynamic> json) => OptionItem(
+Option _$OptionFromJson(Map<String, dynamic> json) => Option(
       id: json['id'] as int?,
       questionId: json['question_id'] as int?,
       label: json['label'] as String?,
@@ -15,8 +15,7 @@ OptionItem _$OptionItemFromJson(Map<String, dynamic> json) => OptionItem(
       iconUrl: json['icon_url'] as String?,
     );
 
-Map<String, dynamic> _$OptionItemToJson(OptionItem instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
       'id': instance.id,
       'question_id': instance.questionId,
       'label': instance.label,

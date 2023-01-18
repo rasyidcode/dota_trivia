@@ -6,10 +6,14 @@ abstract class TriviaEvent {
 
 class TriviaQuestionLoaded extends TriviaEvent {}
 
-class _TriviaStarted extends TriviaEvent {
-  const _TriviaStarted(this.question);
+class TriviaStarted extends TriviaEvent {
+  const TriviaStarted({
+    required this.question,
+    required this.duration,
+  });
 
-  final QuestionItem question;
+  final Question question;
+  final int duration;
 }
 
 class TriviaAnswered extends TriviaEvent {
@@ -18,10 +22,8 @@ class TriviaAnswered extends TriviaEvent {
   final String answer;
 }
 
-class TriviaOptionSelected extends TriviaEvent {
-  const TriviaOptionSelected(this.answer);
+class TriviaChecked extends TriviaEvent {}
 
-  final String answer;
-}
+class TriviaResultShowed extends TriviaEvent {}
 
-class TriviaFinished extends TriviaEvent {}
+class TriviaNextQuestionLoaded extends TriviaEvent {}

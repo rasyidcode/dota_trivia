@@ -2,11 +2,11 @@ import 'package:dota_trivia/constants/hero_stats.dart';
 import 'package:dota_trivia/data/model/common/primary_attr.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'hero_item.g.dart';
+part 'hero.g.dart';
 
 @JsonSerializable()
-class HeroItem {
-  HeroItem({
+class Hero {
+  Hero({
     this.id,
     this.heroId,
     this.name,
@@ -108,10 +108,9 @@ class HeroItem {
   final int? nightVision;
   final List<String>? abilities;
 
-  factory HeroItem.fromJson(Map<String, dynamic> json) =>
-      _$HeroItemFromJson(json);
+  factory Hero.fromJson(Map<String, dynamic> json) => _$HeroFromJson(json);
 
-  Map<String, dynamic> toJson() => _$HeroItemToJson(this);
+  Map<String, dynamic> toJson() => _$HeroToJson(this);
 
   int getMinAttack() {
     int? primaryAttrValue;

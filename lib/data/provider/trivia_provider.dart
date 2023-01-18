@@ -1,8 +1,8 @@
 import 'package:dota_trivia/data/database/trivia_database.dart';
-import 'package:dota_trivia/data/model/common/option_item.dart';
-import 'package:dota_trivia/data/model/hero_item.dart';
-import 'package:dota_trivia/data/model/question_item.dart';
-import 'package:dota_trivia/data/model/template_item.dart';
+import 'package:dota_trivia/data/model/common/option.dart';
+import 'package:dota_trivia/data/model/hero.dart';
+import 'package:dota_trivia/data/model/question.dart';
+import 'package:dota_trivia/data/model/template.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TriviaProvider {
@@ -10,7 +10,7 @@ class TriviaProvider {
 
   final TriviaDatabase _triviaDatabase;
 
-  Future<List<HeroItem>> getHero(int id) async {
+  Future<List<Hero>> getHero(int id) async {
     final heroes = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM heroes WHERE id = ?', [id]);
 
@@ -23,7 +23,7 @@ class TriviaProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'hero_id': h['hero_id'],
               'name': h['name'],
@@ -63,7 +63,7 @@ class TriviaProvider {
         .toList();
   }
 
-  Future<List<HeroItem>> getRandomHeroesNames(int count) async {
+  Future<List<Hero>> getRandomHeroesNames(int count) async {
     final heroes = await (await _triviaDatabase.db)?.rawQuery('''
         SELECT
           id,
@@ -83,7 +83,7 @@ class TriviaProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'localized_name': h['localized_name'],
               'img': h['img']
@@ -111,7 +111,7 @@ class TriviaProvider {
     return ms.map((m) => m['move_speed'] as int).toList();
   }
 
-  Future<HeroItem> getRandomHeroByMoveSpeed(int ms) async {
+  Future<Hero> getRandomHeroByMoveSpeed(int ms) async {
     final heroes = await (await _triviaDatabase.db)?.rawQuery('''
         SELECT
           id,
@@ -133,7 +133,7 @@ class TriviaProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'localized_name': h['localized_name'],
               'img': h['img'],
@@ -168,7 +168,7 @@ class TriviaProvider {
         .toList();
   }
 
-  Future<HeroItem> getRandomHeroByAttackDamage(int min, int max) async {
+  Future<Hero> getRandomHeroByAttackDamage(int min, int max) async {
     final heroes = await (await _triviaDatabase.db)?.rawQuery('''
       SELECT
         id,
@@ -195,7 +195,7 @@ class TriviaProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'localized_name': h['localized_name'],
               'img': h['img'],
@@ -229,7 +229,7 @@ class TriviaProvider {
     return heroes.map((h) => h['base_armor'] as double?).toList();
   }
 
-  Future<HeroItem> getRandomHeroByArmor(double armor) async {
+  Future<Hero> getRandomHeroByArmor(double armor) async {
     final heroes = await (await _triviaDatabase.db)?.rawQuery('''
       SELECT
         id,
@@ -252,7 +252,7 @@ class TriviaProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'localized_name': h['localized_name'],
               'img': h['img'],
@@ -263,7 +263,7 @@ class TriviaProvider {
         .first;
   }
 
-  Future<TemplateItem> getTemplateById(int id) async {
+  Future<Template> getTemplateById(int id) async {
     final templates = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM templates WHERE template_id = ?', [id]);
 
@@ -276,7 +276,7 @@ class TriviaProvider {
     }
 
     return templates
-        .map((t) => TemplateItem.fromJson({
+        .map((t) => Template.fromJson({
               'id': t['id'],
               'template_id': t['template_id'],
               'question': t['question'],
@@ -288,7 +288,7 @@ class TriviaProvider {
         .first;
   }
 
-  Future<List<TemplateItem>> getTemplates() async {
+  Future<List<Template>> getTemplates() async {
     final template = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM templates ORDER BY id ASC');
 
@@ -300,10 +300,10 @@ class TriviaProvider {
       throw TriviaProviderException('List template returns empty');
     }
 
-    return template.map((t) => TemplateItem.fromJson(t)).toList();
+    return template.map((t) => Template.fromJson(t)).toList();
   }
 
-  Future<TemplateItem> getRandomTemplate() async {
+  Future<Template> getRandomTemplate() async {
     final template = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM templates ORDER BY id ASC');
 
@@ -315,12 +315,12 @@ class TriviaProvider {
       throw TriviaProviderException('List template returns empty');
     }
 
-    return (template.map((t) => TemplateItem.fromJson(t)).toList()..shuffle())
+    return (template.map((t) => Template.fromJson(t)).toList()..shuffle())
         .first;
   }
 
   /// Get a question
-  Future<QuestionItem> getLastQuestion() async {
+  Future<Question> getLastQuestion() async {
     final question = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM questions ORDER BY id DESC LIMIT 1');
 
@@ -333,7 +333,7 @@ class TriviaProvider {
     }
 
     return (question
-            .map((q) => QuestionItem.fromJson({
+            .map((q) => Question.fromJson({
                   'id': q['id'],
                   'question': q['question'],
                   'content_url': q['content_url'],
@@ -344,7 +344,7 @@ class TriviaProvider {
   }
 
   /// Get Options by [qid] or Question Id
-  Future<List<OptionItem>> getOptions(int qid) async {
+  Future<List<Option>> getOptions(int qid) async {
     final question = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM options WHERE question_id = ?', [qid]);
 
@@ -357,7 +357,7 @@ class TriviaProvider {
     }
 
     return (question
-        .map((o) => OptionItem.fromJson({
+        .map((o) => Option.fromJson({
               'id': o['id'],
               'question_id': o['question_id'],
               'label': o['label'],
@@ -369,7 +369,7 @@ class TriviaProvider {
   }
 
   /// Insert a new question
-  Future<int> insertQuestion(QuestionItem q) async {
+  Future<int> insertQuestion(Question q) async {
     try {
       int? id = await (await _triviaDatabase.db)?.rawInsert(
           'INSERT INTO questions(question, content_url, template_id) VALUES(?, ?, ?)',
@@ -387,7 +387,7 @@ class TriviaProvider {
   }
 
   /// Insert options
-  Future<void> insertOptions(List<OptionItem> opts, int qid) async {
+  Future<void> insertOptions(List<Option> opts, int qid) async {
     Batch? batch = (await _triviaDatabase.db)?.batch();
     for (var opt in opts) {
       int isCorrect;

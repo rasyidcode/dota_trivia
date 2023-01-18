@@ -1,5 +1,5 @@
 import 'package:dota_trivia/constants/templates.dart';
-import 'package:dota_trivia/data/model/common/option_item.dart';
+import 'package:dota_trivia/data/model/common/option.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_cubit.dart';
 import 'package:dota_trivia/ui/trivia/cubit/trivia_state.dart';
 import 'package:dota_trivia/ui/trivia/widgets/empty_options.dart';

@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'option_item.g.dart';
+part 'option.g.dart';
 
 @JsonSerializable()
-class OptionItem {
-  OptionItem({
+class Option {
+  Option({
     required this.id,
     required this.questionId,
     required this.label,
@@ -23,8 +23,7 @@ class OptionItem {
   @JsonKey(name: 'icon_url')
   final String? iconUrl;
 
-  factory OptionItem.fromJson(Map<String, dynamic> json) =>
-      _$OptionItemFromJson(json);
+  factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$OptionItemToJson(this);
+  Map<String, dynamic> toJson() => _$OptionToJson(this);
 }

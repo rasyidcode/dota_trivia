@@ -1,7 +1,7 @@
 import 'package:dota_trivia/data/database/trivia_database.dart';
-import 'package:dota_trivia/data/model/hero_item.dart';
+import 'package:dota_trivia/data/model/hero.dart';
 import 'package:dota_trivia/data/model/item.dart';
-import 'package:dota_trivia/data/model/template_item.dart';
+import 'package:dota_trivia/data/model/template.dart';
 import 'package:dota_trivia/data/provider/base_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
@@ -350,7 +350,7 @@ class DataProvider extends BaseProvider {
   }
 
   /// Get all templates
-  Future<List<TemplateItem>> getTemplates() async {
+  Future<List<Template>> getTemplates() async {
     final templates = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM templates ORDER BY id ASC');
 
@@ -363,7 +363,7 @@ class DataProvider extends BaseProvider {
     }
 
     return templates
-        .map((t) => TemplateItem.fromJson({
+        .map((t) => Template.fromJson({
               'id': t['id'],
               'template_id': t['template_id'],
               'question': t['question'],
@@ -375,7 +375,7 @@ class DataProvider extends BaseProvider {
   }
 
   /// Get all heroes
-  Future<List<HeroItem>> getHeroes() async {
+  Future<List<Hero>> getHeroes() async {
     final heroes = await (await _triviaDatabase.db)
         ?.rawQuery('SELECT * FROM heroes ORDER BY id ASC');
 
@@ -388,7 +388,7 @@ class DataProvider extends BaseProvider {
     }
 
     return heroes
-        .map((h) => HeroItem.fromJson({
+        .map((h) => Hero.fromJson({
               'id': h['id'],
               'hero_id': h['hero_id'],
               'name': h['name'],

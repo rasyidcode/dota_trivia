@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'hero_item.dart';
+part of 'hero.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-HeroItem _$HeroItemFromJson(Map<String, dynamic> json) => HeroItem(
+Hero _$HeroFromJson(Map<String, dynamic> json) => Hero(
       id: json['id'] as int?,
       heroId: json['hero_id'] as int?,
       name: json['name'] as String?,
@@ -48,7 +48,7 @@ HeroItem _$HeroItemFromJson(Map<String, dynamic> json) => HeroItem(
       legs: json['legs'] as int?,
     );
 
-Map<String, dynamic> _$HeroItemToJson(HeroItem instance) => <String, dynamic>{
+Map<String, dynamic> _$HeroToJson(Hero instance) => <String, dynamic>{
       'id': instance.id,
       'hero_id': instance.heroId,
       'name': instance.name,
