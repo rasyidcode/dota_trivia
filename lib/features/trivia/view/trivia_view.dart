@@ -1,13 +1,26 @@
 import 'package:dota_trivia/features/trivia/triva.dart';
 import 'package:dota_trivia/features/trivia/widget/option_item.dart';
 import 'package:dota_trivia/features/trivia/widget/question_content.dart';
+import 'package:dota_trivia/features/trivia/widget/timer_content.dart';
 import 'package:dota_trivia/features/trivia/widget/trivia_point.dart';
 import 'package:dota_trivia/features/trivia/widget/question_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TriviaView extends StatelessWidget {
+class TriviaView extends StatefulWidget {
   const TriviaView({super.key});
+
+  @override
+  State<TriviaView> createState() => _TriviaViewState();
+}
+
+class _TriviaViewState extends State<TriviaView> {
+  @override
+  void initState() {
+    super.initState();
+
+    BlocProvider.of<TriviaBloc>(context).add(TriviaQuestionLoaded());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +96,7 @@ class TriviaView extends StatelessWidget {
                 border:
                     Border.all(color: Theme.of(context).colorScheme.secondary),
               ),
-              child: Center(
-                child: BlocBuilder<TriviaBloc, TriviaState>(
-                  buildWhen: (previous, current) =>
-                      previous.runtimeType != current.runtimeType,
-                  builder: (context, state) {
-                    return Text(
-                      '00:00',
-                      style: Theme.of(context).textTheme.displayMedium,
-                    );
-                  },
-                ),
-              ),
+              child: const Center(child: TimerContent()),
             ),
           ),
         ],

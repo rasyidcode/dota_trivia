@@ -12,7 +12,7 @@ class TriviaStarted extends TriviaEvent {
     required this.duration,
   });
 
-  final Question question;
+  final Question? question;
   final int duration;
 }
 
