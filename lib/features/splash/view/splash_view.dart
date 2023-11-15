@@ -1,6 +1,6 @@
 import 'package:dota_trivia/features/splash/splash.dart';
 import 'package:dota_trivia/features/splash/widget/splash_icon.dart';
-import 'package:dota_trivia/features/splash/widget/widget.dart';
+import 'package:dota_trivia/features/splash/widget/splash_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
